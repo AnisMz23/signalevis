@@ -75,3 +75,19 @@ Toujours **staging d'abord**, prod seulement si tous les tests passent sur stagi
    ```
 5. Sécurité : `get_advisors` (security) doit être vide après toute migration.
 6. Contrat : toute nouvelle route `/v1` est d'abord ajoutée à `docs/api/openapi.yaml`.
+
+## App mobile (KAN-41) — dossier `app/`
+- Expo SDK 58, TypeScript strict, Expo Router (écrans dans `app/src/app/`). Lire `app/AGENTS.md`
+  avant toute modification : les API Expo changent à chaque SDK, consulter la doc versionnée.
+- Dépendances : toujours `npx expo install <paquet>` (jamais `npm install <paquet>`).
+- Textes : uniquement via `t()` (`app/src/i18n/fr.json` + `en.json`, mêmes clés). Aucun texte en dur.
+- Couleurs : uniquement via `useTheme()` ; toute nouvelle paire texte/fond ajoutée à `__tests__/ca2_theme.test.ts`.
+- Backend : uniquement via `app/src/api/` (jamais le SDK Supabase dans un écran).
+- Avant toute PR, depuis `app/` (doit passer) :
+  ```bash
+  npm run check
+  ```
+  (= typecheck + lint + tests). Vérification de build :
+  ```bash
+  npm run export
+  ```
