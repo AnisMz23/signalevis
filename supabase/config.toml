@@ -1,0 +1,13 @@
+# Configuration Supabase CLI — Signalement Lévis (ADR-001)
+# Projets distants (région ca-central-1) :
+#   staging : sxwdmeprtrkvxjhqeqmx (signalevis-staging)
+#   prod    : orkjzimjypavjqztafzl (signalevis-prod)
+project_id = "signalevis"
+
+[db]
+major_version = 17
+
+# API publique /v1 : le point /health est public ; les routes protégées
+# vérifieront elles-mêmes le jeton (voir supabase/functions/v1/index.ts).
+[functions.v1]
+verify_jwt = false
