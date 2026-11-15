@@ -1,5 +1,7 @@
 # Kit de prise de contact — autorités pilotes (KAN-24)
 
+> **Phase pitch** : démarches reportées après le pitch (ADR-002, décision PO du 2026-11-15).
+
 Annexe de l'[ADR-002](../adr/ADR-002-autorites-routage.md). À utiliser par le PO.
 
 ## Ordre recommandé

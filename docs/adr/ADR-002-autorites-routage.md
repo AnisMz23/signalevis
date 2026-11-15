@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Ticket** | [KAN-24](https://signalevis.atlassian.net/browse/KAN-24) (spike T2) — débloque [KAN-20](https://signalevis.atlassian.net/browse/KAN-20) (S2.1), [KAN-21](https://signalevis.atlassian.net/browse/KAN-21) (S2.2), [KAN-22](https://signalevis.atlassian.net/browse/KAN-22) (S2.3) |
-| **Statut** | Proposé — recherche documentaire terminée ; démarches auprès des autorités en attente (PO) |
+| **Statut** | Accepté (phase pitch) — décision PO du 2026-11-15 : mode démo, démarches reportées après le pitch |
 | **Date** | 2026-11-15 |
 | **Décideur** | Product Owner |
 | **Annexe** | [Kit de prise de contact](../spikes/KAN-24-kit-contact.md) |
@@ -115,14 +115,34 @@ Hydro-Québec et MTMD : ne pas démarcher pour le MVP, utiliser l'aiguillage ass
 - **Le scénario B est écarté.**
 - **Date butoir** des démarches : à fixer par le PO (proposition : 3 semaines).
 
+## Décision PO — phase pitch (2026-11-15)
+
+Le MVP sert d'abord à **présenter le produit (pitch)**. Les accords avec les autorités ne sont pas
+requis à ce stade.
+
+- **Mode démo** : chaque autorité de la matrice reçoit une **boîte de réception de démonstration**
+  contrôlée par l'équipe (ex. `demo-ville@…`, `demo-stlevis@…`). Le routage, le courriel structuré
+  (S2.2) et le suivi fonctionnent de bout en bout, sans dépendre d'une autorité réelle.
+- **Données réelles conservées** : la matrice type → autorité et les canaux publics du § 1 restent la
+  référence ; ils rendent la démo crédible et serviront après le pitch.
+- **Garde-fous** :
+  1. Aucun envoi vers une adresse ou un canal réel d'une autorité en mode démo.
+  2. Les autorités sont nommées comme **destinataires prévus**, jamais présentées comme partenaires :
+     en pitch, la formulation est « conçu pour transmettre à … », pas « en partenariat avec … ».
+  3. Aucun logo ni identité visuelle d'une autorité dans l'app ou les courriels de démo.
+  4. Les boîtes de démo sont identifiées comme telles (`demo-` dans l'adresse, mention
+     « Démonstration » dans l'objet).
+- **Après le pitch** : reprendre le kit de prise de contact et la grille Go/No-Go (§ 4), puis
+  rouvrir cet ADR.
+
 ## Écarts avec le ticket
 
-- **Timebox (3 jours) dépassée par nature** : les accords dépendent des autorités. L'ADR est livré
-  en deux temps — « Proposé » (recherche, matrice, grille) puis « Accepté » (résultats des démarches
-  et décision Go/No-Go du PO).
+- **CA2 (contact, volume, accord) et DoD « décision Go/No-Go »** : reportés après le pitch, par
+  décision PO. Le mode démo remplace l'autorité pilote pour la phase actuelle.
 - **CA3** : le repli recommandé n'est pas le « relais courriel » mentionné, mais l'aiguillage assisté (scénario C).
 
 ## Validation
 
-- **Proposé** le 2026-11-15. Passage à « Accepté » après : (1) retour des démarches ou date butoir
-  atteinte, (2) décision Go/No-Go du PO consignée ici et en commentaire sur KAN-24 et KAN-21.
+- **Accepté** le 2026-11-15 par le PO pour la phase pitch (mode démo).
+- **Révision obligatoire** avant tout usage réel : démarches auprès des autorités, décision Go/No-Go
+  (§ 4), mise à jour de ce document.

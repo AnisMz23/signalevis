@@ -29,7 +29,14 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
 ## Ordre de réalisation
 Les spikes d'architecture débloquent le reste.
 - KAN-45 (T1 – stack backend) : ADR-001 accepté le 2026-11-15.
-- Spikes restants : KAN-24, KAN-29, KAN-25, KAN-19. Une story ne démarre qu'une fois ses spikes acceptés.
+- KAN-24 (T2 – autorités) : ADR-002 accepté le 2026-11-15 en mode démo (pitch).
+- Spikes restants : KAN-29, KAN-25, KAN-19. Une story ne démarre qu'une fois ses spikes acceptés.
+
+## Phase actuelle : pitch (ADR-002)
+- Le produit vise une démonstration. Les autorités reçoivent les signalements dans des boîtes de démo
+  contrôlées par l'équipe (`demo-…`), jamais sur leurs canaux réels.
+- Données fictives autorisées, mais toujours identifiables comme telles. Ne jamais présenter une
+  autorité comme partenaire, ni utiliser son logo ou son identité visuelle.
 
 ## Stack (ADR-001 — docs/adr/ADR-001-backend.md)
 - Backend : Supabase, plan Pro, région spécifique Canada (Central) `ca-central-1` — jamais une région générale.
