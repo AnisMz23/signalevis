@@ -10,13 +10,16 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
 - Estimation et priorité : en-tête de la description.
 - Branche : feat/KAN-<n>-<slug> ; commits : "KAN-<n>: <message>" ; PR liée au ticket.
 - Ne jamais modifier la description d'un ticket. Écarts ou questions → commentaire Jira.
+- Reporter une décision dans un ticket = commentaire Jira, jamais modification de la description.
+- Statuts du workflow : Idea → To Do → In Progress → Testing → Done.
 
 ## Jira — règles d'exécution
 - Avant de coder : lire le ticket, son Epic parent et les tickets référencés (ex. « voir S1.7 »).
   Si une dépendance n'est pas terminée → commentaire Jira + arrêt, et le signaler.
 - Toujours proposer un plan court (fichiers touchés, mapping critère → test) et attendre l'accord avant de coder.
-- Transitions autorisées : vers « en cours » au démarrage, vers « en revue » quand la PR est ouverte.
-  Jamais vers « terminé » : la validation PO et le déploiement staging sont hors périmètre.
+- Transitions autorisées : vers « In Progress » au démarrage uniquement. Le ticket reste en
+  « In Progress » quand la PR est ouverte (pas de statut de revue dans le workflow).
+  Jamais vers « Testing » ni « Done » : la validation PO et le déploiement staging sont hors périmètre.
 - Chaque critère d'acceptation est couvert par au moins un test, référencé « CA<n> » dans le nom du test.
 - Fin de ticket : commentaire Jira avec lien PR, tableau critère → test/fichier, écarts vs raffinement technique.
 - Spike (label `spike`) : livrable = `docs/adr/KAN-<n>-<slug>.md` + recommandation en commentaire Jira. Pas de code de production.
