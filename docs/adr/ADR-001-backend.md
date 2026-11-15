@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Ticket** | [KAN-45](https://signalevis.atlassian.net/browse/KAN-45) (spike T1) — débloque [KAN-42](https://signalevis.atlassian.net/browse/KAN-42) (S8.2) |
-| **Statut** | Proposé — en attente de validation PO |
+| **Statut** | Accepté — validé par le PO le 2026-11-15 |
 | **Date** | 2026-11-15 |
 | **Décideur** | Product Owner (aucun architecte dans l'équipe — voir § Validation et révision) |
 

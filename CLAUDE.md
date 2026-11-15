@@ -22,14 +22,16 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
   Jamais vers « Testing » ni « Done » : la validation PO et le déploiement staging sont hors périmètre.
 - Chaque critère d'acceptation est couvert par au moins un test, référencé « CA<n> » dans le nom du test.
 - Fin de ticket : commentaire Jira avec lien PR, tableau critère → test/fichier, écarts vs raffinement technique.
-- Spike (label `spike`) : livrable = `docs/adr/KAN-<n>-<slug>.md` + recommandation en commentaire Jira. Pas de code de production.
+- Spike (label `spike`) : livrable = `docs/adr/ADR-<nnn>-<slug>.md` (numérotation séquentielle,
+  ticket KAN-<n> dans l'en-tête) + recommandation en commentaire Jira. Pas de code de production.
 - Tous les libellés visibles par l'utilisateur sont en français (Québec).
 
 ## Ordre de réalisation
-Les spikes d'architecture débloquent le reste. Commencer par KAN-45 (T1 – choix de la stack backend) :
-aucune story ne démarre avant que l'ADR soit accepté.
+Les spikes d'architecture débloquent le reste.
+- KAN-45 (T1 – stack backend) : ADR-001 accepté le 2026-11-15.
+- Spikes restants : KAN-24, KAN-29, KAN-25, KAN-19. Une story ne démarre qu'une fois ses spikes acceptés.
 
-## Stack (ADR-001 — docs/adr/KAN-45-choix-stack-backend.md)
+## Stack (ADR-001 — docs/adr/ADR-001-backend.md)
 - Backend : Supabase, plan Pro, région spécifique Canada (Central) `ca-central-1` — jamais une région générale.
 - Base : PostgreSQL 17 + PostGIS 3.3.7. Auth, Storage (photos) et Edge Functions Supabase.
 - Mobile : Expo (React Native, TypeScript).
