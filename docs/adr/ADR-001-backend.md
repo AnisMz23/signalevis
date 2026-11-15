@@ -93,8 +93,8 @@ discriminant est le **temps d'exploitation**, qui défavorise fortement B pour u
 
 | Composant | Version / choix |
 |---|---|
-| PostgreSQL | **17** (version par défaut des nouveaux projets Supabase) |
-| PostGIS | **3.3.7** (version publiée par Supabase ; à confirmer sur le projet créé) |
+| PostgreSQL | **17.11** — confirmé sur le projet `signalevis-prod` le 2026-11-15 |
+| PostGIS | **3.3.7** — disponible sur `signalevis-prod`, confirmé le 2026-11-15 |
 | Région | `ca-central-1` — région spécifique, jamais « Americas » |
 | Environnements | prod = projet Pro · staging = 2ᵉ projet · dev = Supabase CLI en local |
 
@@ -133,8 +133,8 @@ Objectif : pouvoir migrer vers Postgres managé + services standard (option B ou
 - **PostGIS 3.3.7** : version listée dans le dépôt officiel des images Supabase
   ([supabase/postgres](https://github.com/supabase/postgres)) ; PostGIS 3.3.7 supporte
   PostgreSQL 17 ([annonce PostGIS 3.3.7](https://lists.osgeo.org/pipermail/postgis-users/2024-September/046517.html)).
-  La documentation Supabase n'indique pas la version : à confirmer au démarrage de S8.2 avec
-  `SELECT postgis_full_version();` et à consigner dans ce document.
+  **Confirmé le 2026-11-15** sur le projet `signalevis-prod` (`ca-central-1`) :
+  PostgreSQL 17.11, extension PostGIS disponible en version 3.3.7 (`pg_available_extensions`).
 - **KAN-45 CA2 exige une validation « PO + architecte ».** Aucun architecte dans l'équipe → validation PO seule (ci-dessous).
 
 ## Validation et révision
