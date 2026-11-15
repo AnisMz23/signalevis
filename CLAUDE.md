@@ -55,5 +55,23 @@ Les spikes d'architecture débloquent le reste.
 - API publique `/v1` décrite en OpenAPI ; la console autorité et les intégrations dépendent du contrat.
 - Toute dérogation à ces règles = commentaire Jira + mise à jour de l'ADR, jamais en silence.
 
-## Commandes
-À définir après KAN-45 (tests, lint, typecheck). Elles doivent passer avant toute PR.
+## Environnements Supabase (KAN-42)
+| Env | Projet | Réf. | URL API /v1 |
+|---|---|---|---|
+| staging | signalevis-staging | `sxwdmeprtrkvxjhqeqmx` | https://sxwdmeprtrkvxjhqeqmx.supabase.co/functions/v1/v1 |
+| prod | signalevis-prod | `orkjzimjypavjqztafzl` | https://orkjzimjypavjqztafzl.supabase.co/functions/v1/v1 |
+- Pas d'environnement dev local pour la phase pitch : staging en tient lieu.
+- Plan Free : un projet inactif 7 jours est mis en pause → le réactiver avant toute démo.
+
+## Déploiement et tests
+Toujours **staging d'abord**, prod seulement si tous les tests passent sur staging.
+1. Migration : fichier `supabase/migrations/<version>_<nom>.sql`, appliqué via l'outil Supabase
+   `apply_migration` ; renommer le fichier avec la version enregistrée en prod (`list_migrations`).
+2. Edge Function : `supabase/functions/<nom>/` déployée via `deploy_edge_function`.
+3. Tests base : exécuter `supabase/tests/database/*.sql` (outil `execute_sql`) — une exception = échec.
+4. Tests API :
+   ```bash
+   tests/api/ca2_health.sh staging
+   ```
+5. Sécurité : `get_advisors` (security) doit être vide après toute migration.
+6. Contrat : toute nouvelle route `/v1` est d'abord ajoutée à `docs/api/openapi.yaml`.

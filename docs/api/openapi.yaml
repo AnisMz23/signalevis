@@ -1,0 +1,56 @@
+openapi: 3.1.0
+info:
+  title: API Signalement Lévis
+  version: 0.1.0
+  description: |
+    API publique versionnée (KAN-42 CA2, ADR-001). Les clients (app mobile, console autorité,
+    intégrations) dépendent de ce contrat, jamais de l'API PostgREST de Supabase.
+servers:
+  - url: https://sxwdmeprtrkvxjhqeqmx.supabase.co/functions/v1/v1
+    description: Staging (ca-central-1)
+  - url: https://orkjzimjypavjqztafzl.supabase.co/functions/v1/v1
+    description: Prod (ca-central-1)
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: État du service
+      description: Public, sans authentification. Vérifie l'accès à la base et à PostGIS.
+      responses:
+        "200":
+          description: Service opérationnel
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Health" }
+              example: { status: ok, version: 0.1.0, postgres: "17.6", postgis: "3.3.7" }
+        "503":
+          description: Base de données inaccessible
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Degraded" }
+        "405":
+          description: Méthode non autorisée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+components:
+  schemas:
+    Health:
+      type: object
+      required: [status, version, postgres, postgis]
+      properties:
+        status: { type: string, enum: [ok] }
+        version: { type: string, description: Version de l'API }
+        postgres: { type: string, description: Version de PostgreSQL }
+        postgis: { type: string, description: Version de PostGIS }
+    Degraded:
+      type: object
+      required: [status, version]
+      properties:
+        status: { type: string, enum: [degraded] }
+        version: { type: string }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
