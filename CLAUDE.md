@@ -29,5 +29,22 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
 Les spikes d'architecture débloquent le reste. Commencer par KAN-45 (T1 – choix de la stack backend) :
 aucune story ne démarre avant que l'ADR soit accepté.
 
+## Stack (ADR-001 — docs/adr/KAN-45-choix-stack-backend.md)
+- Backend : Supabase, plan Pro, région spécifique Canada (Central) `ca-central-1` — jamais une région générale.
+- Base : PostgreSQL 17 + PostGIS 3.3.7. Auth, Storage (photos) et Edge Functions Supabase.
+- Mobile : Expo (React Native, TypeScript).
+- Environnements : prod = projet Pro, staging = 2ᵉ projet, dev = Supabase CLI en local.
+
+## Modèle d'architecture (contraintes de réversibilité de l'ADR-001)
+- Logique métier en SQL versionné : schéma, fonctions, triggers et politiques RLS dans
+  `supabase/migrations/`. Jamais de modification de schéma via la console Supabase.
+- Multi-tenant par RLS : chaque autorité ne voit que ses signalements ; toute nouvelle table
+  porte une politique RLS dès sa migration de création.
+- Edge Functions minces : adaptateurs (webhooks, courriel/push, vignettes), aucune logique métier.
+- SDK Supabase jamais appelé directement depuis l'interface : passer par les modules internes
+  `auth`, `storage`, `notifications`.
+- API publique `/v1` décrite en OpenAPI ; la console autorité et les intégrations dépendent du contrat.
+- Toute dérogation à ces règles = commentaire Jira + mise à jour de l'ADR, jamais en silence.
+
 ## Commandes
 À définir après KAN-45 (tests, lint, typecheck). Elles doivent passer avant toute PR.

@@ -32,7 +32,7 @@ Pondération : 1 (faible) à 3 (forte). Note : 1 (défavorable) à 5 (favorable)
 | Compétences équipe / maintenabilité sans infra | **3** | **5** — console, migrations, auth et stockage intégrés | **1** — VPC, IAM, sauvegardes, patchs, IaC à maintenir seul |
 | Résidence des données au Canada | 3 | 4 — région spécifique `ca-central-1` (Montréal) | 5 — contrôle total de la région, service par service |
 | RLS multi-tenant | 2 | 5 — RLS Postgres natif, intégré à l'auth (JWT) | 4 — RLS Postgres possible, mais l'intégration Cognito → rôle Postgres est à construire |
-| PostGIS | 2 | 4 — extension disponible ; **Postgres 17** par défaut (voir écart) | 5 — RDS PostgreSQL 16 ou 17 au choix, PostGIS supporté |
+| PostGIS | 2 | 4 — PostGIS 3.3.7 disponible ; **Postgres 17** imposé (accepté par le PO) | 5 — RDS PostgreSQL 16 ou 17 au choix, PostGIS supporté |
 | Coût 1 000 / 10 000 signalements/mois | 2 | 4 — prévisible, plafond de dépense par défaut | 3 — base faible, mais coûts cachés (NAT, Multi-AZ, temps humain) |
 | Dépendance fournisseur (lock-in) | 2 | 3 — Postgres standard, mais Auth/Storage/Edge propriétaires → atténué par la contrainte de réversibilité | 3 — services AWS propriétaires (Cognito, Lambda) aussi |
 | **Total pondéré** (max 70) | | **59** | **48** |
@@ -91,6 +91,13 @@ discriminant est le **temps d'exploitation**, qui défavorise fortement B pour u
 
 **Option A — Supabase, plan Pro, région spécifique Canada (Central) `ca-central-1`.**
 
+| Composant | Version / choix |
+|---|---|
+| PostgreSQL | **17** (version par défaut des nouveaux projets Supabase) |
+| PostGIS | **3.3.7** (version publiée par Supabase ; à confirmer sur le projet créé) |
+| Région | `ca-central-1` — région spécifique, jamais « Americas » |
+| Environnements | prod = projet Pro · staging = 2ᵉ projet · dev = Supabase CLI en local |
+
 ## Contraintes de réversibilité (obligatoires)
 
 Objectif : pouvoir migrer vers Postgres managé + services standard (option B ou autre) sans réécriture.
@@ -118,12 +125,16 @@ Objectif : pouvoir migrer vers Postgres managé + services standard (option B ou
 
 ## Écarts avec les tickets
 
-- **KAN-42 CA1 exige PostgreSQL 16.** Supabase crée les nouveaux projets en **Postgres 17**
-  ([changelog Supabase](https://supabase.com/changelog/35851-forthcoming-postgres-17-release-notes)).
-  Recommandation : accepter Postgres 17 (aucune fonctionnalité du MVP ne dépend de la 16).
-  Décision PO requise — signalée en commentaire sur KAN-42.
-- **Version PostGIS** : non publiée dans les sources consultées ; à vérifier au démarrage de S8.2
-  (`SELECT postgis_full_version();`).
+- **KAN-42 CA1 exige PostgreSQL 16 → remplacé par PostgreSQL 17 (décision PO du 2026-11-15).**
+  Supabase crée les nouveaux projets en Postgres 17
+  ([changelog Supabase](https://supabase.com/changelog/35851-forthcoming-postgres-17-release-notes)) ;
+  aucune fonctionnalité du MVP ne dépend de la version 16. La description de KAN-42 n'est pas
+  modifiée : la décision y est reportée par commentaire.
+- **PostGIS 3.3.7** : version listée dans le dépôt officiel des images Supabase
+  ([supabase/postgres](https://github.com/supabase/postgres)) ; PostGIS 3.3.7 supporte
+  PostgreSQL 17 ([annonce PostGIS 3.3.7](https://lists.osgeo.org/pipermail/postgis-users/2024-September/046517.html)).
+  La documentation Supabase n'indique pas la version : à confirmer au démarrage de S8.2 avec
+  `SELECT postgis_full_version();` et à consigner dans ce document.
 - **KAN-45 CA2 exige une validation « PO + architecte ».** Aucun architecte dans l'équipe → validation PO seule (ci-dessous).
 
 ## Validation et révision
