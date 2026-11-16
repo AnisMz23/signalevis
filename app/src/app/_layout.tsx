@@ -18,6 +18,9 @@ export default function RootLayout() {
       >
         <Stack.Screen name="index" options={{ title: t('home.title') }} />
         <Stack.Screen name="a-propos" options={{ title: t('about.title') }} />
+        <Stack.Screen name="signaler/type" options={{ title: t('type.title') }} />
+        <Stack.Screen name="signaler/urgence" options={{ title: t('emergency.call') }} />
+        <Stack.Screen name="signaler/choisi" options={{ title: t('selected.title') }} />
       </Stack>
     </>
   );

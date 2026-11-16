@@ -15,6 +15,8 @@ describe('CA2 — accessibilité WCAG 2.1 AA (contrastes)', () => {
       ['lien / fond', th.primary, th.background],
       ['succès / surface', th.success, th.surface],
       ['erreur / surface', th.danger, th.surface],
+      ['bannière urgence 911', th.onDanger, th.danger],
+      ['erreur / fond', th.danger, th.background],
     ];
     for (const [label, fg, bg] of pairs) {
       test(`CA2 : thème ${mode} — ${label} ≥ 4,5:1`, () => {

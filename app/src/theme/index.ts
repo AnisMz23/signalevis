@@ -11,6 +11,7 @@ export type Theme = {
   onPrimary: string;
   success: string;
   danger: string;
+  onDanger: string;
 };
 
 export const themes: Record<'light' | 'dark', Theme> = {
@@ -23,6 +24,7 @@ export const themes: Record<'light' | 'dark', Theme> = {
     onPrimary: '#FFFFFF',
     success: '#1B6E3A',
     danger: '#B3261E',
+    onDanger: '#FFFFFF',
   },
   dark: {
     background: '#0F1720',
@@ -33,6 +35,7 @@ export const themes: Record<'light' | 'dark', Theme> = {
     onPrimary: '#0F1720',
     success: '#7FD69B',
     danger: '#FFB4AB',
+    onDanger: '#0F1720',
   },
 };
 

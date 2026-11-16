@@ -118,6 +118,9 @@ Toujours **staging d'abord**, prod seulement si tous les tests passent sur stagi
 - Textes : uniquement via `t()` (`app/src/i18n/fr.json` + `en.json`, mêmes clés). Aucun texte en dur.
 - Couleurs : uniquement via `useTheme()` ; toute nouvelle paire texte/fond ajoutée à `__tests__/ca2_theme.test.ts`.
 - Backend : uniquement via `app/src/api/` (jamais le SDK Supabase dans un écran).
+- Nouvel écran (route) : régénérer les types de routes avant `npm run typecheck` en lançant
+  brièvement le serveur de dev (`CI=1 timeout 60 npx expo start --offline`) — `.expo/` n'est pas versionné.
+- `fireEvent` (Testing Library 14) est asynchrone : toujours `await fireEvent.press(...)`.
 - Avant toute PR, depuis `app/` (doit passer) :
   ```bash
   npm run check
