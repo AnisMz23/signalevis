@@ -18,6 +18,11 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
   (org_admin, dispatcher, field_worker). Le citoyen n'appartient à aucune organisation.
 - Hypothèse MVP : un utilisateur = une seule organisation.
 - Spec : docs/product/plateforme-saas.md · maquettes : docs/design/console/
+- Résumé des commentaires Jira : docs/product/raffinement-technique-v2.md. **Jira fait foi** sur ces
+  documents en cas d'écart.
+- Les maquettes `*.dc.html` sont une spécification, pas du code : lire docs/design/console/README.md
+  avant de s'en servir ; ne pas les exécuter (le script `support.js` n'est pas fourni), ne reprendre
+  ni le markup, ni les styles inline, ni les données d'exemple.
 
 ## Avant de coder un ticket KAN
 1. Lire la description ET tous les commentaires. Les commentaires

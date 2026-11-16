@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Admin – Membres et rôles</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Nunito,system-ui,sans-serif;color:#1C2B24;background:#FBF7F0}
+a{color:#1F4D3A}a:hover{color:#163A2B}
+input,select{font:inherit}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#4F5F57;font-weight:700;text-align:left;padding:12px 16px;border-bottom:1px solid #E6DED0}
+td{padding:14px 16px;border-bottom:1px solid #EFE8DC;font-size:15px;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 1000px; display: flex; flex-wrap: wrap; background: #FBF7F0">
+  <nav aria-label="Navigation organisation" style="flex: 1 1 240px; max-width: 260px; background: #1F4D3A; color: #FFFFFF; padding: 28px 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px">
+      <div aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D9643A; display: flex; align-items: center; justify-content: center; font-weight: 800">SL</div>
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 800; font-size: 16px">Ville de Lévis — démo</span><span style="font-size: 12px; color: #CFE0D6">Administrateur</span></div>
+    </div>
+    <span style="align-self: flex-start; margin: 0 0 20px 46px; font-size: 12px; font-weight: 800; background: #EFE6D6; color: #5C4A2A; padding: 3px 10px; border-radius: 999px">Démonstration</span>
+    <a href="DI-File.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">File de réception</a>
+    <span style="margin: 14px 14px 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #CFE0D6">Administration</span>
+    <a href="AD-Membres.dc.html" aria-current="page" style="color: #1F4D3A; background: #FBF7F0; text-decoration: none; font-weight: 700; padding: 12px 14px; border-radius: 10px">Membres et rôles</a>
+    <a href="AD-Services.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Services</a>
+    <a href="AD-Territoire.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Territoire</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Accès support</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Journal d'audit</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 36px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+    <header style="display: flex; flex-direction: column; gap: 4px">
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800">Membres et rôles</h1>
+      <p style="margin: 0; font-size: 15px; color: #4F5F57">Invitez vos dispatchers et travailleurs terrain. Chaque rôle n'accède qu'à ce dont il a besoin.</p>
+    </header>
+    <section aria-label="Répartition par rôle" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px">
+      <div style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 16px 20px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #4F5F57; font-weight: 700">Administrateurs</span><span style="font-size: 26px; font-weight: 800">2</span></div>
+      <div style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 16px 20px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #4F5F57; font-weight: 700">Dispatchers</span><span style="font-size: 26px; font-weight: 800">2</span></div>
+      <div style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 16px 20px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #4F5F57; font-weight: 700">Travailleurs terrain</span><span style="font-size: 26px; font-weight: 800">4</span></div>
+      <div style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 16px 20px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #4F5F57; font-weight: 700">Invitations en attente</span><span style="font-size: 26px; font-weight: 800">1</span></div>
+    </section>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <section aria-label="Liste des membres" style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px">
+        <div style="overflow-x: auto">
+          <table style="width: 100%; border-collapse: collapse; min-width: 780px">
+            <thead><tr><th scope="col">Membre</th><th scope="col">Rôle</th><th scope="col">Statut</th><th scope="col">Dernière connexion</th><th scope="col">Interventions ouvertes</th><th scope="col"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th></tr></thead>
+            <tbody>
+              <sc-for list="{{members}}" as="m" hint-placeholder-count="8">
+                <tr>
+                  <td><div style="display: flex; align-items: center; gap: 12px"><span aria-hidden="true" style="{{m.avatar}}">{{m.initials}}</span><div style="display: flex; flex-direction: column"><span style="font-weight: 700">{{m.name}}</span><span style="font-size: 13px; color: #4F5F57">{{m.email}}</span></div></div></td>
+                  <td><span style="{{m.roleStyle}}">{{m.role}}</span></td>
+                  <td><span style="{{m.statusStyle}}">{{m.status}}</span></td>
+                  <td style="color: #4F5F57">{{m.last}}</td>
+                  <td>{{m.open}}</td>
+                  <td style="text-align: right"><a href="#" style="font-weight: 700">{{m.action}}</a></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <aside aria-label="Inviter un membre" style="flex: 1 1 300px; max-width: 380px; background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 800">Inviter un membre</h2>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px">Courriel
+          <input type="email" placeholder="prenom.nom@organisation.ca" style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 12px; font-size: 15px; font-weight: 400">
+        </label>
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px">
+          <legend style="font-weight: 700; font-size: 14px; margin-bottom: 8px">Rôle</legend>
+          <label style="display: flex; gap: 10px; align-items: flex-start; border: 1px solid #E6DED0; border-radius: 12px; padding: 12px"><input type="radio" name="role" style="width: 20px; height: 20px; accent-color: #1F4D3A; margin: 2px 0 0"><span style="display: flex; flex-direction: column"><strong style="font-size: 15px">Administrateur</strong><span style="font-size: 13px; color: #4F5F57">Membres, services, territoire.</span></span></label>
+          <label style="display: flex; gap: 10px; align-items: flex-start; border: 2px solid #1F4D3A; background: #F1F7F3; border-radius: 12px; padding: 12px"><input type="radio" name="role" checked style="width: 20px; height: 20px; accent-color: #1F4D3A; margin: 2px 0 0"><span style="display: flex; flex-direction: column"><strong style="font-size: 15px">Dispatcher</strong><span style="font-size: 13px; color: #4F5F57">Tri, assignation, réponses au citoyen.</span></span></label>
+          <label style="display: flex; gap: 10px; align-items: flex-start; border: 1px solid #E6DED0; border-radius: 12px; padding: 12px"><input type="radio" name="role" style="width: 20px; height: 20px; accent-color: #1F4D3A; margin: 2px 0 0"><span style="display: flex; flex-direction: column"><strong style="font-size: 15px">Travailleur terrain</strong><span style="font-size: 13px; color: #4F5F57">Application mobile : ses interventions.</span></span></label>
+        </fieldset>
+        <button type="button" style="min-height: 44px; border-radius: 12px; border: 0; background: #1F4D3A; color: #FFFFFF; font: inherit; font-weight: 700; cursor: pointer">Envoyer l'invitation</button>
+        <p style="margin: 0; font-size: 13px; color: #4F5F57">Un membre appartient à une seule organisation. L'organisation garde toujours au moins un administrateur actif.</p>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const R = {
+      'Administrateur': 'background:#E3ECF7;color:#1E3F66',
+      'Dispatcher': 'background:#DCEBE2;color:#1F4D3A',
+      'Travailleur terrain': 'background:#FBE3D8;color:#8A3414'
+    };
+    const S = {
+      'Actif': 'color:#1F4D3A',
+      'Invité': 'color:#6B4E00',
+      'Désactivé': 'color:#6B7670'
+    };
+    const pill = 'font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px;';
+    const list = [
+      ['Marie Tremblay', 'marie.tremblay@exemple.ca', 'Administrateur', 'Actif', 'Aujourd’hui, 9 h 12', '—'],
+      ['Julien Côté', 'julien.cote@exemple.ca', 'Administrateur', 'Actif', 'Hier', '—'],
+      ['Sophie Gagnon', 'sophie.gagnon@exemple.ca', 'Dispatcher', 'Actif', 'Aujourd’hui, 8 h 47', '—'],
+      ['Karim Benali', 'karim.benali@exemple.ca', 'Dispatcher', 'Actif', 'Aujourd’hui, 7 h 30', '—'],
+      ['Louis Fortin', 'louis.fortin@exemple.ca', 'Travailleur terrain', 'Actif', 'Aujourd’hui, 10 h 05', '3'],
+      ['Émilie Roy', 'emilie.roy@exemple.ca', 'Travailleur terrain', 'Actif', 'Aujourd’hui, 9 h 58', '2'],
+      ['Nadia Morin', 'nadia.morin@exemple.ca', 'Travailleur terrain', 'Invité', 'Jamais', '—'],
+      ['Patrick Bélanger', 'patrick.belanger@exemple.ca', 'Travailleur terrain', 'Désactivé', 'Il y a 3 semaines', '0']
+    ];
+    const members = list.map(([name, email, role, status, last, open]) => ({
+      name, email, role, status, last, open,
+      initials: name.split(' ').map(w => w[0]).join(''),
+      avatar: 'width:36px;height:36px;border-radius:50%;background:#EFE6D6;color:#5C4A2A;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none',
+      roleStyle: pill + R[role],
+      statusStyle: 'font-weight:700;font-size:14px;' + S[status],
+      action: status === 'Invité' ? 'Renvoyer' : status === 'Désactivé' ? 'Réactiver' : 'Modifier'
+    }));
+    return { members };
+  }
+}
+</script>
+</body>
+</html>
