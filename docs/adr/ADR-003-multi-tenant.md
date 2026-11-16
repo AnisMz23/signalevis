@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Ticket** | [KAN-50](https://signalevis.atlassian.net/browse/KAN-50) (spike T6) — débloque KAN-12, KAN-20, KAN-33, KAN-46, F9, F10, F11 |
-| **Statut** | Proposé — en attente de validation PO |
+| **Statut** | Accepté — validé par le PO le 2026-11-16 |
 | **Date** | 2026-11-16 |
 | **Décideur** | Product Owner |
 | **Prototype** | [`docs/spikes/KAN-50-prototype-rls.sql`](../spikes/KAN-50-prototype-rls.sql) — exécuté sur staging, 9/9 tests réussis, entièrement annulé (aucune trace en base) |
@@ -196,13 +196,17 @@ journalisation des accès support, séparation de l'identité (D6) comme mesure 
 
 ## Décisions PO requises
 
-1. **Valider l'ADR** (CA6).
-2. **File « À trier »** : le super admin voit le contenu des signalements **sans affectation** pour les
-   réaffecter (D8). C'est cohérent avec la qualification « responsable » (D10) et le menu « À trier »
-   de la maquette super admin, mais c'est une exception à « le super admin ne voit que des agrégats ».
-3. **KAN-20 CA5** : routage selon la plage horaire (déjà en attente).
+1. ~~Valider l'ADR (CA6)~~ — **validé** le 2026-11-16.
+2. ~~File « À trier »~~ — **validé** le 2026-11-16 : le super admin voit le contenu des signalements
+   **sans affectation** pour les réaffecter (D8), en exception à « agrégats seulement ». Justification :
+   la plateforme est responsable de la saisie citoyenne (D10) ; menu « À trier » de la maquette super admin.
+3. **KAN-20 CA5** : routage selon la plage horaire — **toujours en attente**. Le modèle le permet
+   (`org_service.schedule`, `holiday`) ; sans décision, l'étape 4 de D4 est ignorée.
 
 ## Validation
 
-- **Proposé** le 2026-11-16. À valider par le PO ; ensuite : commentaires de report sur KAN-12,
-  KAN-20, KAN-33, KAN-46 (DoD) et levée du blocage de KAN-12 / KAN-20 dans `CLAUDE.md`.
+- **Accepté** le 2026-11-16 par le PO (CA6), avec la décision « File À trier ».
+- Reports effectués en commentaire sur KAN-12, KAN-20, KAN-33, KAN-46 (DoD) ; blocage de KAN-12 /
+  KAN-20 levé dans `CLAUDE.md`.
+- **Révision** si : passage multi-organisation par utilisateur, organisation avec plus de quelques
+  milliers de membres (coût de `current_org()` à remesurer), ou exigence d'audit externe.
