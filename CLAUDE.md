@@ -121,6 +121,15 @@ Toujours **staging d'abord**, prod seulement si tous les tests passent sur stagi
 - Nouvel écran (route) : régénérer les types de routes avant `npm run typecheck` en lançant
   brièvement le serveur de dev (`CI=1 timeout 60 npx expo start --offline`) — `.expo/` n'est pas versionné.
 - `fireEvent` (Testing Library 14) est asynchrone : toujours `await fireEvent.press(...)`.
+- Publication (démo pitch, KAN-41 CA3) : projet Expo `@siganleviss-team/signalevis`, canal `preview`,
+  runtime `exposdk:58.0.0` (politique `sdkVersion`, compatible Expo Go). Clé Expo injectée par le proxy
+  pour `api.expo.dev` (jamais en clair). Depuis `app/`, après `npm run check` :
+  ```bash
+  EXPO_TOKEN=proxy-injected npx eas-cli@latest update --channel preview --environment preview --message "<message>" --non-interactive
+  ```
+  Lien Expo Go : `exp://u.expo.dev/1935a0e8-8194-4993-8e66-23255353b6a3?runtime-version=exposdk%3A58.0.0&channel-name=preview`
+  (QR : `docs/demo/qr-expo-go-preview.png`). Avant un build store (TestFlight / Play), repasser à la
+  politique `appVersion` ou `fingerprint`.
 - Avant toute PR, depuis `app/` (doit passer) :
   ```bash
   npm run check
