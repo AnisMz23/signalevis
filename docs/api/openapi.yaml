@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: API Signalement Lévis
-  version: 0.1.0
+  version: 0.2.0
   description: |
     API publique versionnée (KAN-42 CA2, ADR-001). Les clients (app mobile, console autorité,
     intégrations) dépendent de ce contrat, jamais de l'API PostgREST de Supabase.
@@ -33,8 +33,65 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
+  /services:
+    get:
+      operationId: getServices
+      summary: Catalogue des services proposés à une position (KAN-52)
+      description: |
+        Public, sans authentification. Renvoie les services types actifs, activés par une
+        organisation active ou de démonstration dont le territoire couvre la position.
+        `recipient` est l'organisation qui recevrait le signalement (ADR-003, ordre de routage).
+        Le client met la liste en cache et la recharge quand `catalog_version` change.
+      parameters:
+        - { name: lat, in: query, required: true, schema: { type: number, minimum: -90, maximum: 90 } }
+        - { name: lng, in: query, required: true, schema: { type: number, minimum: -180, maximum: 180 } }
+      responses:
+        "200":
+          description: Catalogue (liste vide si aucune organisation ne couvre la position)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Catalog" }
+        "400":
+          description: Coordonnées absentes ou invalides
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+              example: { error: invalid_coordinates }
+        "405":
+          description: Méthode non autorisée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "503":
+          description: Base de données inaccessible
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
 components:
   schemas:
+    Catalog:
+      type: object
+      required: [catalog_version, services]
+      properties:
+        catalog_version: { type: integer, description: Incrémentée à chaque modification du catalogue }
+        services:
+          type: array
+          items: { $ref: "#/components/schemas/Service" }
+    Service:
+      type: object
+      required: [code, domain, domain_label, category, label, icon, is_emergency, default_priority, recipient, recipient_is_demo]
+      properties:
+        code: { type: string, example: nid_de_poule }
+        domain: { type: string, example: voirie }
+        domain_label: { type: string, example: Voirie et travaux publics }
+        category: { type: string, example: Voirie }
+        label: { type: string, description: Libellé FR (personnalisé par l'organisation s'il y a lieu) }
+        label_en: { type: [string, "null"] }
+        icon: { type: string, description: Nom d'icône (MaterialCommunityIcons) }
+        is_emergency: { type: boolean, description: Si vrai, l'app affiche l'écran 911 et bloque la soumission (KAN-18) }
+        default_priority: { type: string, enum: [low, medium, high] }
+        recipient: { type: string, description: Destinataire prévu (organisation) }
+        recipient_is_demo: { type: boolean, description: Organisation de démonstration (ADR-002) }
     Health:
       type: object
       required: [status, version, postgres, postgis]
