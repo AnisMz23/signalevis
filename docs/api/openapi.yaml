@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: API Signalement Lévis
-  version: 0.2.0
+  version: 0.3.0
   description: |
     API publique versionnée (KAN-42 CA2, ADR-001). Les clients (app mobile, console autorité,
     intégrations) dépendent de ce contrat, jamais de l'API PostgREST de Supabase.
@@ -67,8 +67,127 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
+  /platform/organizations:
+    get:
+      operationId: listOrganizations
+      summary: Liste des organisations avec agrégats (KAN-51 CA3) — super admin
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Organisations (aucun contenu de signalement)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [organizations]
+                properties:
+                  organizations: { type: array, items: { $ref: "#/components/schemas/OrganizationSummary" } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+    post:
+      operationId: createOrganization
+      summary: Créer une organisation (KAN-51 CA1) — super admin
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, slug, domains]
+              properties:
+                name: { type: string, example: Ville de Lévis — démo }
+                slug: { type: string, pattern: "^[a-z0-9]+(-[a-z0-9]+)*$", example: ville-levis-demo }
+                domains: { type: array, minItems: 1, items: { type: string }, example: [voirie, eclairage] }
+                status: { type: string, enum: [demo, active, suspended], default: demo }
+                contact_email: { type: string, format: email }
+                contact_phone: { type: string }
+                agreement_ref: { type: string, description: Obligatoire pour le statut active (KAN-46) }
+      responses:
+        "201":
+          description: Organisation créée
+          content: { application/json: { schema: { type: object, properties: { id: { type: string, format: uuid } } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { description: Identifiant court déjà utilisé, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+        "422": { description: Règle non respectée (domaine inconnu, active sans accord…), content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+  /platform/organizations/{id}/status:
+    post:
+      operationId: setOrganizationStatus
+      summary: Suspendre, réactiver ou activer une organisation (KAN-51 CA4) — super admin
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: { type: string, enum: [demo, active, suspended] }
+                agreement_ref: { type: string }
+      responses:
+        "200": { description: Statut modifié }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { description: Organisation introuvable, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+        "422": { description: Règle non respectée (active sans accord, demo en envoi réel…), content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+  /platform/organizations/{id}/invitations:
+    post:
+      operationId: inviteOrganizationAdmin
+      summary: Inviter (ou relancer) le premier admin d'organisation (KAN-51 CA2) — super admin
+      description: |
+        L'invitation est valable 7 jours. Un nouvel appel pendant cette période renvoie un courriel
+        (200, resent = true) ; après expiration, une nouvelle invitation est créée (201).
+        La membership devient active à la première confirmation du courriel.
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [email], properties: { email: { type: string, format: email } } }
+      responses:
+        "201": { description: Invitation créée et envoyée, content: { application/json: { schema: { $ref: "#/components/schemas/Invitation" } } } }
+        "200": { description: Invitation renvoyée, content: { application/json: { schema: { $ref: "#/components/schemas/Invitation" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { description: Courriel déjà membre d'une autre organisation, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+        "422": { description: Organisation suspendue, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+        "502": { description: Échec d'envoi du courriel (l'invitation existe et peut être relancée), content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
 components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT, description: JWT Supabase de l'utilisateur (claims du hook KAN-51) }
+  responses:
+    BadRequest: { description: Requête invalide, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+    Unauthorized: { description: Jeton absent ou invalide, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+    Forbidden: { description: Réservé au super admin, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
   schemas:
+    OrganizationSummary:
+      type: object
+      required: [id, name, slug, status, domains, active_members, pending_invitations, created_at]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        slug: { type: string }
+        status: { type: string, enum: [demo, active, suspended] }
+        domains: { type: array, items: { type: string } }
+        active_members: { type: integer }
+        pending_invitations: { type: integer }
+        reports_30d: { type: [integer, "null"], description: "null tant que les signalements n'existent pas (KAN-17)" }
+        created_at: { type: string, format: date-time }
+    Invitation:
+      type: object
+      required: [invitation_id, email, expires_at, resent]
+      properties:
+        invitation_id: { type: string, format: uuid }
+        email: { type: string, format: email }
+        expires_at: { type: string, format: date-time }
+        resent: { type: boolean }
     Catalog:
       type: object
       required: [catalog_version, services]

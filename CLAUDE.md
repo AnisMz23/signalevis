@@ -88,6 +88,13 @@ Les spikes d'architecture débloquent le reste.
 | prod | signalevis-prod | `orkjzimjypavjqztafzl` | https://orkjzimjypavjqztafzl.supabase.co/functions/v1/v1 |
 - Pas d'environnement dev local pour la phase pitch : staging en tient lieu.
 - Plan Free : un projet inactif 7 jours est mis en pause → le réactiver avant toute démo.
+- Hook JWT (KAN-51) : `public.custom_access_token_hook`, activé manuellement par le PO dans
+  Authentication → Hooks (type Postgres, schéma public). Sans lui, aucun claim `org_id` /
+  `is_platform_admin` : les routes `/v1/platform/*` répondent 403. Le désactiver au même endroit en cas
+  de problème de connexion.
+- Organisations de démo (KAN-51) : `ville-levis-demo`, `mtmd-demo`, `stlevis-demo`, territoires
+  APPROXIMATIFS (à remplacer par KAN-25). Les fixtures de test doivent rester hors de Lévis
+  (zone fictive ≈ -75°, 48.7°) pour ne pas interférer avec elles.
 
 ## Déploiement et tests
 Toujours **staging d'abord**, prod seulement si tous les tests passent sur staging.
