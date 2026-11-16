@@ -22,6 +22,11 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
 ## Avant de coder un ticket KAN
 1. Lire la description ET tous les commentaires. Les commentaires
    « Raffinement technique v2 » et « Impact plateforme SaaS » font foi sur la description.
+   - Les commentaires ne sont PAS renvoyés par défaut : appeler `getJiraIssue` avec
+     `fields: ["summary", "description", "status", "parent", "comment"]`, et paginer
+     (`listJiraIssueComments`) si `total` > nombre reçu.
+   - En cas de contradiction entre commentaires, le plus récent prime.
+   - Dans le plan proposé, citer explicitement les commentaires pris en compte.
 2. KAN-12 et KAN-20 sont bloqués tant que l'ADR-003 (KAN-50) n'est pas validé.
 3. Si un critère contredit un ADR accepté, s'arrêter et commenter le ticket au lieu de trancher.
 
