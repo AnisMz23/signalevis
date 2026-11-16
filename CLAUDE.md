@@ -32,7 +32,9 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
      (`listJiraIssueComments`) si `total` > nombre reçu.
    - En cas de contradiction entre commentaires, le plus récent prime.
    - Dans le plan proposé, citer explicitement les commentaires pris en compte.
-2. KAN-12 et KAN-20 sont bloqués tant que l'ADR-003 (KAN-50) n'est pas validé.
+2. Tout ticket qui touche organisations, rôles, routage ou catalogue suit l'ADR-003
+   (docs/adr/ADR-003-multi-tenant.md, accepté le 2026-11-16) : claims JWT toujours confirmés en base
+   (`current_org()`), identité citoyenne dans `report_reporter`, tests d'isolement pgTAP par table.
 3. Si un critère contredit un ADR accepté, s'arrêter et commenter le ticket au lieu de trancher.
 
 ## Jira — règles d'exécution
@@ -52,7 +54,9 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
 Les spikes d'architecture débloquent le reste.
 - KAN-45 (T1 – stack backend) : ADR-001 accepté le 2026-11-15.
 - KAN-24 (T2 – autorités) : ADR-002 accepté le 2026-11-15 en mode démo (pitch).
-- Spikes restants : KAN-50 (ADR-003, multi-tenant — prioritaire), KAN-29, KAN-25, KAN-19. Une story ne démarre qu'une fois ses spikes acceptés.
+- KAN-50 (T6 – multi-tenant) : ADR-003 accepté le 2026-11-16 ; KAN-12 et KAN-20 débloqués
+  (KAN-20 CA5, plage horaire : décision PO en attente).
+- Spikes restants : KAN-29, KAN-25, KAN-19. Une story ne démarre qu'une fois ses spikes acceptés.
 
 ## Phase actuelle : pitch (ADR-002)
 - Le produit vise une démonstration. Les autorités reçoivent les signalements dans des boîtes de démo
@@ -69,7 +73,7 @@ Les spikes d'architecture débloquent le reste.
 ## Modèle d'architecture (contraintes de réversibilité de l'ADR-001)
 - Logique métier en SQL versionné : schéma, fonctions, triggers et politiques RLS dans
   `supabase/migrations/`. Jamais de modification de schéma via la console Supabase.
-- Multi-tenant par RLS : chaque autorité ne voit que ses signalements ; toute nouvelle table
+- Multi-tenant par RLS : chaque organisation ne voit que ses signalements ; toute nouvelle table
   porte une politique RLS dès sa migration de création.
 - Edge Functions minces : adaptateurs (webhooks, courriel/push, vignettes), aucune logique métier.
 - SDK Supabase jamais appelé directement depuis l'interface : passer par les modules internes
