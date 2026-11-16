@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Admin – Services de l'organisation</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Nunito,system-ui,sans-serif;color:#1C2B24;background:#FBF7F0}
+a{color:#1F4D3A}a:hover{color:#163A2B}
+input,select{font:inherit}
+</style>
+</helmet>
+<div style="min-height: 1000px; display: flex; flex-wrap: wrap; background: #FBF7F0">
+  <nav aria-label="Navigation organisation" style="flex: 1 1 240px; max-width: 260px; background: #1F4D3A; color: #FFFFFF; padding: 28px 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px">
+      <div aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D9643A; display: flex; align-items: center; justify-content: center; font-weight: 800">SL</div>
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 800; font-size: 16px">Ville de Lévis — démo</span><span style="font-size: 12px; color: #CFE0D6">Administrateur</span></div>
+    </div>
+    <span style="align-self: flex-start; margin: 0 0 20px 46px; font-size: 12px; font-weight: 800; background: #EFE6D6; color: #5C4A2A; padding: 3px 10px; border-radius: 999px">Démonstration</span>
+    <a href="DI-File.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">File de réception</a>
+    <span style="margin: 14px 14px 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #CFE0D6">Administration</span>
+    <a href="AD-Membres.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Membres et rôles</a>
+    <a href="AD-Services.dc.html" aria-current="page" style="color: #1F4D3A; background: #FBF7F0; text-decoration: none; font-weight: 700; padding: 12px 14px; border-radius: 10px">Services</a>
+    <a href="AD-Territoire.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Territoire</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Accès support</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Journal d'audit</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 36px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+    <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Services de l'organisation</h1>
+        <p style="margin: 0; font-size: 15px; color: #4F5F57">Activez les services que vous prenez en charge et ajustez leurs paramètres. Domaines : Voirie, Éclairage, Propreté.</p>
+      </div>
+      <span style="font-size: 14px; font-weight: 700; color: #1F4D3A; background: #DCEBE2; border-radius: 999px; padding: 6px 14px">{{activeCount}} services actifs</span>
+    </header>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <section aria-label="Services" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+        <sc-for list="{{services}}" as="s" hint-placeholder-count="7">
+          <article style="{{s.card}}">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #4F5F57">{{s.domain}}</span>
+                <h2 style="margin: 0; font-size: 18px; font-weight: 800">{{s.name}}</h2>
+              </div>
+              <button type="button" role="switch" aria-checked="{{s.on}}" aria-label="{{s.toggleLabel}}" onClick="{{s.toggle}}" style="{{s.switchStyle}}"><span aria-hidden="true" style="{{s.knobStyle}}"></span></button>
+            </div>
+            <sc-if value="{{s.enabled}}" hint-placeholder-val="{{ true }}">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+                <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 13px">Libellé affiché (optionnel)
+                  <input type="text" value="{{s.label}}" placeholder="{{s.name}}" style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 12px; font-size: 15px; font-weight: 400">
+                </label>
+                <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 13px">Délai cible
+                  <select style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 10px; font-size: 15px; font-weight: 400; background: #FFFFFF"><option>{{s.sla}}</option><option>24 h</option><option>72 h</option><option>7 jours</option></select>
+                </label>
+                <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 13px">Priorité par défaut
+                  <select style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 10px; font-size: 15px; font-weight: 400; background: #FFFFFF"><option>{{s.prio}}</option><option>Faible</option><option>Moyenne</option><option>Élevée</option></select>
+                </label>
+                <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 13px">Prise en charge
+                  <select style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 10px; font-size: 15px; font-weight: 400; background: #FFFFFF"><option>{{s.hours}}</option><option>24/7</option><option>Lun–ven, 8 h–16 h 30</option></select>
+                </label>
+              </div>
+            </sc-if>
+            <sc-if value="{{s.disabled}}" hint-placeholder-val="{{ false }}">
+              <p style="margin: 0; font-size: 14px; color: #4F5F57">Désactivé : les nouveaux signalements de ce type sont routés vers l'organisation suivante ou « À trier ».</p>
+            </sc-if>
+          </article>
+        </sc-for>
+      </section>
+      <aside aria-label="Aperçu citoyen" style="flex: 1 1 300px; max-width: 360px; display: flex; flex-direction: column; gap: 12px">
+        <h2 style="margin: 0; font-size: 17px; font-weight: 800">Ce que voit le citoyen</h2>
+        <p style="margin: 0; font-size: 14px; color: #4F5F57">Point d'aperçu : 5880, rue Saint-Georges (Desjardins).</p>
+        <div style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 28px; padding: 20px 16px; display: flex; flex-direction: column; gap: 10px">
+          <span style="font-weight: 800; font-size: 16px; padding: 0 4px">Type d'anomalie</span>
+          <sc-for list="{{preview}}" as="p" hint-placeholder-count="5">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; border: 1px solid #E6DED0; border-radius: 14px; padding: 12px 14px; font-weight: 700; font-size: 15px"><span>{{p.label}}</span><span style="font-size: 12px; font-weight: 600; color: #4F5F57">{{p.org}}</span></div>
+          </sc-for>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { off: { 4: true, 6: true } }; }
+  renderVals() {
+    const base = [
+      ['Voirie', 'Nid-de-poule', '72 h', 'Moyenne', '24/7', ''],
+      ['Voirie', 'Trottoir endommagé', '7 jours', 'Moyenne', 'Lun–ven, 8 h–16 h 30', ''],
+      ['Voirie', 'Signalisation manquante', '24 h', 'Élevée', '24/7', ''],
+      ['Éclairage', 'Lampadaire éteint', '7 jours', 'Faible', 'Lun–ven, 8 h–16 h 30', 'Lumière de rue éteinte'],
+      ['Éclairage', 'Lampadaire clignotant', '7 jours', 'Faible', 'Lun–ven, 8 h–16 h 30', ''],
+      ['Propreté', 'Dépôt sauvage', '5 jours', 'Moyenne', 'Lun–ven, 8 h–16 h 30', ''],
+      ['Propreté', 'Graffiti', '14 jours', 'Faible', 'Lun–ven, 8 h–16 h 30', '']
+    ];
+    const services = base.map(([domain, name, sla, prio, hours, label], i) => {
+      const on = !this.state.off[i];
+      return {
+        domain, name, sla, prio, hours, label,
+        enabled: on, disabled: !on, on: on ? 'true' : 'false',
+        toggleLabel: (on ? 'Désactiver ' : 'Activer ') + name,
+        card: 'background:#FFFFFF;border:1px solid #E6DED0;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;' + (on ? '' : 'opacity:.85'),
+        switchStyle: 'width:52px;height:30px;border-radius:999px;border:0;cursor:pointer;position:relative;padding:0;flex:none;background:' + (on ? '#1F4D3A' : '#B8C2BD'),
+        knobStyle: 'position:absolute;top:3px;width:24px;height:24px;border-radius:50%;background:#FFFFFF;left:' + (on ? '25px' : '3px'),
+        toggle: () => this.setState({ off: { ...this.state.off, [i]: on } })
+      };
+    });
+    const preview = services.filter(s => s.enabled).map(s => ({ label: s.label || s.name, org: 'Ville de Lévis' }))
+      .concat([{ label: 'Abribus endommagé', org: 'STLévis' }, { label: 'Véhicule abandonné', org: 'SPVL' }]);
+    return { services, preview, activeCount: services.filter(s => s.enabled).length };
+  }
+}
+</script>
+</body>
+</html>

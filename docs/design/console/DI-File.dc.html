@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Dispatcher – File de réception</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Nunito,system-ui,sans-serif;color:#1C2B24;background:#FBF7F0}
+a{color:#1F4D3A}a:hover{color:#163A2B}
+input,select{font:inherit}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#4F5F57;font-weight:700;text-align:left;padding:12px 14px;border-bottom:1px solid #E6DED0;white-space:nowrap}
+td{padding:14px;border-bottom:1px solid #EFE8DC;font-size:15px;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 1000px; display: flex; flex-wrap: wrap; background: #FBF7F0">
+  <nav aria-label="Navigation dispatcher" style="flex: 1 1 240px; max-width: 260px; background: #1F4D3A; color: #FFFFFF; padding: 28px 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px">
+      <div aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D9643A; display: flex; align-items: center; justify-content: center; font-weight: 800">SL</div>
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 800; font-size: 16px">Ville de Lévis — démo</span><span style="font-size: 12px; color: #CFE0D6">Sophie Gagnon · Dispatcher</span></div>
+    </div>
+    <span style="align-self: flex-start; margin: 0 0 20px 46px; font-size: 12px; font-weight: 800; background: #EFE6D6; color: #5C4A2A; padding: 3px 10px; border-radius: 999px">Démonstration</span>
+    <a href="DI-File.dc.html" aria-current="page" style="color: #1F4D3A; background: #FBF7F0; text-decoration: none; font-weight: 700; padding: 12px 14px; border-radius: 10px">File de réception</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Carte</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Interventions terrain</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Réponses types</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 36px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+    <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">File de réception</h1>
+        <p style="margin: 0; font-size: 15px; color: #4F5F57">Signalements routés vers Ville de Lévis — démo.</p>
+      </div>
+      <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #1F4D3A"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; background: #2E8B57"></span>Mis à jour en direct</span>
+    </header>
+    <div role="tablist" aria-label="Vues de la file" style="display: flex; flex-wrap: wrap; gap: 8px">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+        <button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}<span style="{{t.countStyle}}">{{t.count}}</span></button>
+      </sc-for>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end">
+      <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Service
+        <select style="min-height: 44px; min-width: 180px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 10px; font-size: 15px; background: #FFFFFF"><option>Tous les services</option><option>Nid-de-poule</option><option>Lampadaire éteint</option><option>Dépôt sauvage</option></select>
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Priorité
+        <select style="min-height: 44px; min-width: 150px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 10px; font-size: 15px; background: #FFFFFF"><option>Toutes</option><option>Élevée</option><option>Moyenne</option><option>Faible</option></select>
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Secteur
+        <select style="min-height: 44px; min-width: 220px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 10px; font-size: 15px; background: #FFFFFF"><option>Tous les secteurs</option><option>Desjardins</option><option>Chutes-de-la-Chaudière-Est</option><option>Chutes-de-la-Chaudière-Ouest</option></select>
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; flex: 1 1 220px">Recherche
+        <input type="search" placeholder="Référence ou adresse" style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF">
+      </label>
+    </div>
+    <section aria-label="Signalements" style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px">
+      <div style="overflow-x: auto">
+        <table style="width: 100%; border-collapse: collapse; min-width: 980px">
+          <thead><tr><th scope="col">Référence</th><th scope="col">Service</th><th scope="col">Adresse</th><th scope="col">Priorité</th><th scope="col">Reçu</th><th scope="col">Statut</th><th scope="col">Assigné</th><th scope="col">Moi aussi</th><th scope="col"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Ouvrir</span></th></tr></thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+              <tr>
+                <td style="font-weight: 800; white-space: nowrap">{{r.ref}}</td>
+                <td><div style="display: flex; flex-direction: column"><span style="font-weight: 700">{{r.service}}</span><span style="font-size: 13px; color: #4F5F57">{{r.photos}}</span></div></td>
+                <td><div style="display: flex; flex-direction: column"><span>{{r.address}}</span><span style="font-size: 13px; color: #4F5F57">{{r.sector}}</span></div></td>
+                <td><span style="{{r.prioStyle}}">{{r.prio}}</span></td>
+                <td style="white-space: nowrap"><div style="display: flex; flex-direction: column"><span>{{r.age}}</span><span style="{{r.lateStyle}}">{{r.late}}</span></div></td>
+                <td><span style="{{r.statusStyle}}">{{r.status}}</span></td>
+                <td style="color: #33443B">{{r.assignee}}</td>
+                <td style="text-align: center">{{r.plus}}</td>
+                <td style="text-align: right"><a href="DI-Detail.dc.html" style="font-weight: 700; white-space: nowrap">Ouvrir</a></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { tab: 'todo' }; }
+  renderVals() {
+    const pill = 'font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px;white-space:nowrap;';
+    const P = { 'Élevée': pill + 'background:#FBE3D8;color:#8A3414', 'Moyenne': pill + 'background:#F7ECC8;color:#6B4E00', 'Faible': pill + 'background:#ECEFED;color:#3E4C45' };
+    const S = {
+      'Nouveau': pill + 'background:#E3ECF7;color:#1E3F66',
+      'Pris en charge': pill + 'background:#DCEBE2;color:#1F4D3A',
+      'Sur place': pill + 'background:#DCEBE2;color:#1F4D3A',
+      'À valider': pill + 'background:#EFE6D6;color:#5C4A2A',
+      'Résolu': pill + 'background:#ECEFED;color:#3E4C45'
+    };
+    const all = [
+      ['LEV-2026-000231', 'Nid-de-poule', '3 photos', '1250, boul. Alphonse-Desjardins', 'Desjardins', 'Élevée', 'il y a 12 min', '', 'Nouveau', '—', 4, 'todo'],
+      ['LEV-2026-000229', 'Signalisation manquante', '2 photos', 'Rue Saint-Laurent / côte du Passage', 'Desjardins', 'Élevée', 'il y a 31 h', 'En retard de 7 h', 'Nouveau', '—', 1, 'todo'],
+      ['LEV-2026-000226', 'Lampadaire éteint', '1 photo', '45, rue des Pionniers', 'Chutes-de-la-Chaudière-Est', 'Faible', 'il y a 2 h', '', 'Nouveau', '—', 0, 'todo'],
+      ['LEV-2026-000224', 'Dépôt sauvage', '3 photos', 'Parc des Chutes-de-la-Chaudière', 'Chutes-de-la-Chaudière-Ouest', 'Moyenne', 'il y a 5 h', '', 'Pris en charge', 'Louis Fortin', 2, 'progress'],
+      ['LEV-2026-000219', 'Nid-de-poule', '2 photos', '890, rue Commerciale', 'Chutes-de-la-Chaudière-Est', 'Moyenne', 'il y a 1 j', '', 'Sur place', 'Émilie Roy', 6, 'progress'],
+      ['LEV-2026-000214', 'Trottoir endommagé', '1 photo', '22, rue Fraser', 'Desjardins', 'Moyenne', 'il y a 2 j', '', 'À valider', 'Louis Fortin', 0, 'validate'],
+      ['LEV-2026-000201', 'Graffiti', '2 photos', 'Traverse Québec-Lévis, quai', 'Desjardins', 'Faible', 'il y a 4 j', '', 'Résolu', 'Émilie Roy', 1, 'closed']
+    ];
+    const tabsDef = [['todo', 'À trier'], ['progress', 'En cours'], ['validate', 'À valider'], ['late', 'En retard'], ['closed', 'Fermés']];
+    const match = (row, t) => t === 'late' ? !!row[7] : row[11] === t;
+    const tab = this.state.tab;
+    const tabs = tabsDef.map(([id, label]) => {
+      const on = id === tab;
+      return {
+        label, count: all.filter(r => match(r, id)).length, selected: on ? 'true' : 'false',
+        style: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:12px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;' + (on ? 'background:#1F4D3A;color:#FFFFFF;border:1px solid #1F4D3A' : 'background:#FFFFFF;color:#1F4D3A;border:1px solid #C9D8CF'),
+        countStyle: 'font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;' + (on ? 'background:#FFFFFF;color:#1F4D3A' : 'background:#EAF2ED;color:#1F4D3A'),
+        pick: () => this.setState({ tab: id })
+      };
+    });
+    const rows = all.filter(r => match(r, tab)).map(([ref, service, photos, address, sector, prio, age, late, status, assignee, plus]) => ({
+      ref, service, photos, address, sector, prio, age, late, status, assignee, plus,
+      prioStyle: P[prio], statusStyle: S[status],
+      lateStyle: late ? 'font-size:13px;font-weight:800;color:#9A3A16' : 'display:none'
+    }));
+    return { tabs, rows };
+  }
+}
+</script>
+</body>
+</html>
