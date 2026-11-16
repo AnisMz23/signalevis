@@ -1,0 +1,17 @@
+{
+  "app.name": "Signalement Lévis",
+  "home.title": "Accueil",
+  "home.headline": "Signalez une anomalie en moins d'une minute",
+  "home.subtitle": "Nid-de-poule, lampadaire brûlé, abribus endommagé : votre signalement est transmis à la bonne autorité.",
+  "home.about": "À propos",
+  "home.about.hint": "Ouvre la page d'information sur l'application",
+  "health.checking": "Vérification du service…",
+  "health.ok": "Service opérationnel",
+  "health.down": "Service momentanément indisponible",
+  "health.retry": "Réessayer",
+  "health.retry.hint": "Relance la vérification de l'état du service",
+  "about.title": "À propos",
+  "about.body": "Signalement Lévis est une application citoyenne de démonstration. Les signalements sont conçus pour être transmis aux autorités compétentes de Lévis.",
+  "about.hosting": "Données hébergées au Québec (Montréal).",
+  "about.version": "Version {version}"
+}

@@ -1,0 +1,17 @@
+{
+  "app.name": "Signalement Lévis",
+  "home.title": "Home",
+  "home.headline": "Report an issue in under a minute",
+  "home.subtitle": "Pothole, burnt-out streetlight, damaged bus shelter: your report goes to the right authority.",
+  "home.about": "About",
+  "home.about.hint": "Opens the information page about the app",
+  "health.checking": "Checking service…",
+  "health.ok": "Service operational",
+  "health.down": "Service temporarily unavailable",
+  "health.retry": "Retry",
+  "health.retry.hint": "Runs the service status check again",
+  "about.title": "About",
+  "about.body": "Signalement Lévis is a demonstration citizen app. Reports are designed to be sent to the relevant authorities in Lévis.",
+  "about.hosting": "Data hosted in Québec (Montréal).",
+  "about.version": "Version {version}"
+}
