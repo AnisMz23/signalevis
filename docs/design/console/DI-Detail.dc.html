@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Dispatcher – Détail et assignation</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Nunito,system-ui,sans-serif;color:#1C2B24;background:#FBF7F0}
+a{color:#1F4D3A}a:hover{color:#163A2B}
+input,select,textarea{font:inherit}
+</style>
+</helmet>
+<div style="min-height: 1000px; display: flex; flex-wrap: wrap; background: #FBF7F0">
+  <nav aria-label="Navigation dispatcher" style="flex: 1 1 240px; max-width: 260px; background: #1F4D3A; color: #FFFFFF; padding: 28px 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px">
+      <div aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D9643A; display: flex; align-items: center; justify-content: center; font-weight: 800">SL</div>
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 800; font-size: 16px">Ville de Lévis — démo</span><span style="font-size: 12px; color: #CFE0D6">Sophie Gagnon · Dispatcher</span></div>
+    </div>
+    <span style="align-self: flex-start; margin: 0 0 20px 46px; font-size: 12px; font-weight: 800; background: #EFE6D6; color: #5C4A2A; padding: 3px 10px; border-radius: 999px">Démonstration</span>
+    <a href="DI-File.dc.html" aria-current="page" style="color: #1F4D3A; background: #FBF7F0; text-decoration: none; font-weight: 700; padding: 12px 14px; border-radius: 10px">File de réception</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Carte</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Interventions terrain</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Réponses types</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 32px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+    <a href="DI-File.dc.html" style="font-weight: 700; font-size: 14px; text-decoration: none">← File de réception</a>
+    <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+          <h1 style="margin: 0; font-size: 28px; font-weight: 800">Nid-de-poule</h1>
+          <span style="font-weight: 700; font-size: 13px; padding: 4px 10px; border-radius: 999px; background: #FBE3D8; color: #8A3414">Priorité citoyen : Élevée</span>
+          <span style="{{statusStyle}}">{{statusLabel}}</span>
+        </div>
+        <span style="font-size: 15px; color: #4F5F57">LEV-2026-000231 · reçu aujourd'hui à 9 h 28 · délai cible 72 h</span>
+      </div>
+      <a href="#" style="min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; border: 1px solid #C9D8CF; background: #FFFFFF; font-weight: 700; text-decoration: none">Réacheminer</a>
+    </header>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <section aria-label="Photos du citoyen" style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+          <div role="img" aria-label="Photo 1 : nid-de-poule, vue rapprochée" style="aspect-ratio: 4 / 3; border-radius: 12px; background: #D9D2C4; display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box; font-size: 13px; font-weight: 700; color: #3E3A31">Photo principale</div>
+          <div role="img" aria-label="Photo 2 : vue d'ensemble de la chaussée" style="aspect-ratio: 4 / 3; border-radius: 12px; background: #CFC7B7; display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box; font-size: 13px; font-weight: 700; color: #3E3A31">Photo 2</div>
+          <div role="img" aria-label="Photo 3 : repère avec la bordure de trottoir" style="aspect-ratio: 4 / 3; border-radius: 12px; background: #C4BCAB; display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box; font-size: 13px; font-weight: 700; color: #3E3A31">Photo 3</div>
+        </section>
+        <section aria-label="Détails" style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px">
+          <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #4F5F57">Description</span><p style="margin: 0; font-size: 15px">Trou profond dans la voie de droite, juste après le feu. Des voitures font des écarts pour l'éviter.</p></div>
+            <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #4F5F57">Adresse</span><span style="font-size: 15px">1250, boul. Alphonse-Desjardins · Desjardins</span><span style="font-size: 13px; color: #4F5F57">46,8031, -71,1789 · précision ± 6 m · GPS</span></div>
+            <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #4F5F57">Appuis citoyens</span><span style="font-size: 15px">4 personnes ont signalé « Moi aussi » · 1 doublon regroupé</span></div>
+          </div>
+          <svg role="img" aria-label="Mini-carte : position du signalement sur le boulevard Alphonse-Desjardins" viewBox="0 0 300 200" style="flex: 1 1 240px; max-width: 320px; border-radius: 12px; background: #E9F0F4">
+            <path d="M0 120 L300 90" stroke="#FFFFFF" stroke-width="22"></path>
+            <path d="M120 0 L150 200" stroke="#FFFFFF" stroke-width="14"></path>
+            <circle cx="170" cy="103" r="26" fill="#D9643A" opacity=".2"></circle>
+            <circle cx="170" cy="103" r="9" fill="#D9643A" stroke="#FFFFFF" stroke-width="3"></circle>
+          </svg>
+        </section>
+        <section aria-label="Chronologie" style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-size: 17px; font-weight: 800">Chronologie</h2>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+            <li style="display: flex; gap: 12px"><span style="width: 70px; color: #4F5F57; flex: none">9 h 28</span><span>Soumis par un citoyen (identité non partagée)</span></li>
+            <li style="display: flex; gap: 12px"><span style="width: 70px; color: #4F5F57; flex: none">9 h 28</span><span>Routé vers Ville de Lévis — démo · service Nid-de-poule · territoire Desjardins</span></li>
+            <li style="display: flex; gap: 12px"><span style="width: 70px; color: #4F5F57; flex: none">9 h 29</span><span>Livré à la boîte de démonstration (accepté)</span></li>
+            <sc-if value="{{assigned}}" hint-placeholder-val="{{ false }}">
+              <li style="display: flex; gap: 12px; font-weight: 700; color: #1F4D3A"><span style="width: 70px; flex: none">À l'instant</span><span>Intervention assignée à {{worker}} · citoyen notifié « Pris en charge »</span></li>
+            </sc-if>
+          </ol>
+        </section>
+      </div>
+      <aside style="flex: 1 1 320px; max-width: 400px; display: flex; flex-direction: column; gap: 16px">
+        <section aria-label="Assigner une intervention" style="background: #FFFFFF; border: 2px solid #1F4D3A; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Intervention terrain</h2>
+          <sc-if value="{{notAssigned}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px">
+                <legend style="font-weight: 700; font-size: 14px; margin-bottom: 8px">Travailleur terrain</legend>
+                <sc-for list="{{workers}}" as="w" hint-placeholder-count="3">
+                  <button type="button" onClick="{{w.pick}}" aria-pressed="{{w.pressed}}" style="{{w.style}}"><span style="font-weight: 700">{{w.name}}</span><span style="font-size: 13px; color: #4F5F57">{{w.load}}</span></button>
+                </sc-for>
+              </fieldset>
+              <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px">Échéance
+                <input type="text" value="19 nov. 2026, 9 h 28" style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 12px; font-size: 15px; font-weight: 400">
+                <span style="font-weight: 400; font-size: 13px; color: #4F5F57">Préremplie selon le délai cible du service (72 h).</span>
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px">Consigne
+                <textarea rows="3" placeholder="Ex. : prévoir de l'asphalte froid, signaler la voie." style="border: 1px solid #C9BFAE; border-radius: 10px; padding: 10px 12px; font-size: 15px; font-weight: 400; resize: vertical"></textarea>
+              </label>
+              <button type="button" onClick="{{assign}}" style="min-height: 48px; border-radius: 12px; border: 0; background: #1F4D3A; color: #FFFFFF; font: inherit; font-weight: 800; font-size: 16px; cursor: pointer">Assigner à {{worker}}</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{assigned}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div style="background: #F1F7F3; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><strong>Assignée à {{worker}}</strong><span style="font-size: 14px; color: #33443B">Statut terrain : Assignée · échéance 19 nov., 9 h 28</span><span style="font-size: 13px; color: #4F5F57">Notification envoyée sur l'application terrain.</span></div>
+              <button type="button" onClick="{{reset}}" style="min-height: 44px; border-radius: 12px; border: 1px solid #C9D8CF; background: #FFFFFF; color: #1F4D3A; font: inherit; font-weight: 700; cursor: pointer">Réassigner</button>
+            </div>
+          </sc-if>
+        </section>
+        <section aria-label="Statut et réponse" style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-size: 17px; font-weight: 800">Statut et réponse au citoyen</h2>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px">Priorité officielle
+            <select style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 10px; font-size: 15px; font-weight: 400; background: #FFFFFF"><option>Élevée</option><option>Moyenne</option><option>Faible</option></select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px">Réponse type
+            <select style="min-height: 44px; border: 1px solid #C9BFAE; border-radius: 10px; padding: 0 10px; font-size: 15px; font-weight: 400; background: #FFFFFF"><option>Pris en charge</option><option>Résolu</option><option>Hors juridiction</option></select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px">Commentaire public
+            <textarea rows="2" style="border: 1px solid #C9BFAE; border-radius: 10px; padding: 10px 12px; font-size: 15px; font-weight: 400">Merci ! Une équipe passera d'ici 72 h.</textarea>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px">Note interne
+            <textarea rows="2" placeholder="Visible par votre organisation seulement" style="border: 1px solid #C9BFAE; border-radius: 10px; padding: 10px 12px; font-size: 15px; font-weight: 400"></textarea>
+          </label>
+          <button type="button" style="min-height: 44px; border-radius: 12px; border: 1px solid #1F4D3A; background: #FFFFFF; color: #1F4D3A; font: inherit; font-weight: 700; cursor: pointer">Publier la réponse</button>
+        </section>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { worker: 'Louis Fortin', assigned: false }; }
+  renderVals() {
+    const list = [['Louis Fortin', '3 interventions en cours · secteur Desjardins'], ['Émilie Roy', '2 en cours · Chutes-de-la-Chaudière-Est'], ['Karim Lavoie', '0 en cours · disponible']];
+    const workers = list.map(([name, load]) => {
+      const on = this.state.worker === name;
+      return {
+        name, load, pressed: on ? 'true' : 'false',
+        style: 'display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-height:44px;padding:10px 12px;border-radius:12px;font:inherit;font-size:15px;cursor:pointer;color:#1C2B24;' + (on ? 'border:2px solid #1F4D3A;background:#F1F7F3' : 'border:1px solid #E6DED0;background:#FFFFFF'),
+        pick: () => this.setState({ worker: name })
+      };
+    });
+    const a = this.state.assigned;
+    const pill = 'font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px;';
+    return {
+      workers, worker: this.state.worker, assigned: a, notAssigned: !a,
+      statusLabel: a ? 'Pris en charge' : 'Nouveau',
+      statusStyle: pill + (a ? 'background:#DCEBE2;color:#1F4D3A' : 'background:#E3ECF7;color:#1E3F66'),
+      assign: () => this.setState({ assigned: true }),
+      reset: () => this.setState({ assigned: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

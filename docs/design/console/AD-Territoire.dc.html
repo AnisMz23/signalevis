@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Admin – Territoire et routage</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Nunito,system-ui,sans-serif;color:#1C2B24;background:#FBF7F0}
+a{color:#1F4D3A}a:hover{color:#163A2B}
+input,select{font:inherit}
+</style>
+</helmet>
+<div style="min-height: 1000px; display: flex; flex-wrap: wrap; background: #FBF7F0">
+  <nav aria-label="Navigation organisation" style="flex: 1 1 240px; max-width: 260px; background: #1F4D3A; color: #FFFFFF; padding: 28px 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px">
+      <div aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D9643A; display: flex; align-items: center; justify-content: center; font-weight: 800">SL</div>
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 800; font-size: 16px">Ville de Lévis — démo</span><span style="font-size: 12px; color: #CFE0D6">Administrateur</span></div>
+    </div>
+    <span style="align-self: flex-start; margin: 0 0 20px 46px; font-size: 12px; font-weight: 800; background: #EFE6D6; color: #5C4A2A; padding: 3px 10px; border-radius: 999px">Démonstration</span>
+    <a href="DI-File.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">File de réception</a>
+    <span style="margin: 14px 14px 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #CFE0D6">Administration</span>
+    <a href="AD-Membres.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Membres et rôles</a>
+    <a href="AD-Services.dc.html" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Services</a>
+    <a href="AD-Territoire.dc.html" aria-current="page" style="color: #1F4D3A; background: #FBF7F0; text-decoration: none; font-weight: 700; padding: 12px 14px; border-radius: 10px">Territoire</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Accès support</a>
+    <a href="#" style="color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 12px 14px; border-radius: 10px">Journal d'audit</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 36px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+    <header style="display: flex; flex-direction: column; gap: 4px">
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800">Territoire et routage</h1>
+      <p style="margin: 0; font-size: 15px; color: #4F5F57">Définissez la zone couverte par vos services. Vous recevez uniquement les signalements situés dans cette zone.</p>
+    </header>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <section aria-label="Carte du territoire" style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+        <svg role="img" aria-label="Carte schématique : territoire de la Ville de Lévis avec chevauchements de la route 132 et des abribus" viewBox="0 0 760 440" style="width: 100%; height: auto; border-radius: 12px; background: #E9F0F4">
+          <path d="M0 70 C 140 40, 300 90, 420 60 S 680 40, 760 70 L 760 0 L 0 0 Z" fill="#BFD6E2"></path>
+          <text x="560" y="38" font-family="Nunito" font-size="14" font-weight="700" fill="#2C5A73">Fleuve Saint-Laurent</text>
+          <path d="M40 110 C 160 90, 300 120, 430 100 S 690 95, 730 120 L 720 400 L 60 410 Z" fill="#DCEBE2" stroke="#1F4D3A" stroke-width="3"></path>
+          <path d="M60 230 L 720 225" stroke="#1F4D3A" stroke-width="1.5" stroke-dasharray="6 6" opacity=".6"></path>
+          <path d="M300 110 L 300 405" stroke="#1F4D3A" stroke-width="1.5" stroke-dasharray="6 6" opacity=".6"></path>
+          <text x="420" y="175" font-family="Nunito" font-size="15" font-weight="800" fill="#1F4D3A">Desjardins</text>
+          <text x="90" y="300" font-family="Nunito" font-size="15" font-weight="800" fill="#1F4D3A">Chutes-de-la-Chaudière-Ouest</text>
+          <text x="400" y="320" font-family="Nunito" font-size="15" font-weight="800" fill="#1F4D3A">Chutes-de-la-Chaudière-Est</text>
+          <path d="M40 135 C 200 120, 420 140, 740 128" stroke="#D9643A" stroke-width="12" fill="none" opacity=".55"></path>
+          <path d="M40 135 C 200 120, 420 140, 740 128" stroke="#9A3A16" stroke-width="2" fill="none" stroke-dasharray="4 4"></path>
+          <text x="560" y="155" font-family="Nunito" font-size="13" font-weight="800" fill="#7A2E10">Route 132 · MTMD — démo</text>
+          <circle cx="470" cy="210" r="7" fill="#2C5A73"></circle>
+          <circle cx="520" cy="250" r="7" fill="#2C5A73"></circle>
+          <circle cx="210" cy="260" r="7" fill="#2C5A73"></circle>
+          <circle cx="600" cy="280" r="7" fill="#2C5A73"></circle>
+        </svg>
+        <ul aria-label="Légende" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: #33443B">
+          <li style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 16px; height: 16px; border-radius: 4px; background: #DCEBE2; border: 2px solid #1F4D3A"></span>Votre territoire</li>
+          <li style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 16px; height: 16px; border-radius: 4px; background: #F0B79C; border: 2px dashed #9A3A16"></span>Chevauchement (autre organisation)</li>
+          <li style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 50%; background: #2C5A73"></span>Arrêts STLévis — démo</li>
+        </ul>
+      </section>
+      <aside style="flex: 1 1 300px; max-width: 380px; display: flex; flex-direction: column; gap: 16px">
+        <fieldset style="margin: 0; background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+          <legend style="font-weight: 800; font-size: 16px; padding: 0 6px">Territoire par défaut</legend>
+          <label style="display: flex; gap: 10px; align-items: center; min-height: 44px"><input type="radio" name="src" checked style="width: 20px; height: 20px; accent-color: #1F4D3A">Limites municipales de Lévis</label>
+          <label style="display: flex; gap: 10px; align-items: center; min-height: 44px"><input type="radio" name="src" style="width: 20px; height: 20px; accent-color: #1F4D3A">Arrondissements sélectionnés</label>
+          <label style="display: flex; gap: 10px; align-items: center; min-height: 44px"><input type="radio" name="src" style="width: 20px; height: 20px; accent-color: #1F4D3A">Importer un fichier GeoJSON</label>
+        </fieldset>
+        <section aria-label="Territoires par service" style="background: #FFFFFF; border: 1px solid #E6DED0; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 800">Territoires par service</h2>
+          <div style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px; border-bottom: 1px solid #EFE8DC; padding-bottom: 8px"><span>Nid-de-poule</span><span style="color: #4F5F57">Par défaut</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px; border-bottom: 1px solid #EFE8DC; padding-bottom: 8px"><span>Lampadaire éteint</span><span style="color: #4F5F57">Par défaut</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px"><span>Dépôt sauvage</span><span style="color: #4F5F57">Desjardins seulement</span></div>
+        </section>
+        <section aria-label="Chevauchements" style="background: #FFF3EC; border: 1px solid #F1C9B5; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; color: #5E2410">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 800">2 chevauchements détectés</h2>
+          <p style="margin: 0; font-size: 14px"><strong>Nid-de-poule · Route 132</strong> : MTMD — démo reçoit le signalement (territoire plus précis).</p>
+          <p style="margin: 0; font-size: 14px"><strong>Signalisation · abords des arrêts</strong> : Ville de Lévis — démo (priorité de routage fixée par la plateforme).</p>
+          <p style="margin: 0; font-size: 13px">Règle : territoire le plus précis, puis priorité de routage, sinon « À trier ».</p>
+        </section>
+        <button type="button" style="min-height: 44px; border-radius: 12px; border: 0; background: #1F4D3A; color: #FFFFFF; font: inherit; font-weight: 700; cursor: pointer">Enregistrer le territoire</button>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
