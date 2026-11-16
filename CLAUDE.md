@@ -13,6 +13,18 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
 - Reporter une décision dans un ticket = commentaire Jira, jamais modification de la description.
 - Statuts du workflow : Idea → To Do → In Progress → Testing → Done.
 
+## Plateforme SaaS (décision PO 2026-11-16)
+- Modèle : super admin → organisations (domaines, services, territoire) → membres
+  (org_admin, dispatcher, field_worker). Le citoyen n'appartient à aucune organisation.
+- Hypothèse MVP : un utilisateur = une seule organisation.
+- Spec : docs/product/plateforme-saas.md · maquettes : docs/design/console/
+
+## Avant de coder un ticket KAN
+1. Lire la description ET tous les commentaires. Les commentaires
+   « Raffinement technique v2 » et « Impact plateforme SaaS » font foi sur la description.
+2. KAN-12 et KAN-20 sont bloqués tant que l'ADR-003 (KAN-50) n'est pas validé.
+3. Si un critère contredit un ADR accepté, s'arrêter et commenter le ticket au lieu de trancher.
+
 ## Jira — règles d'exécution
 - Avant de coder : lire le ticket, son Epic parent et les tickets référencés (ex. « voir S1.7 »).
   Si une dépendance n'est pas terminée → commentaire Jira + arrêt, et le signaler.
@@ -30,7 +42,7 @@ Application citoyenne de signalement d'anomalies (Lévis, QC). MVP : app mobile 
 Les spikes d'architecture débloquent le reste.
 - KAN-45 (T1 – stack backend) : ADR-001 accepté le 2026-11-15.
 - KAN-24 (T2 – autorités) : ADR-002 accepté le 2026-11-15 en mode démo (pitch).
-- Spikes restants : KAN-29, KAN-25, KAN-19. Une story ne démarre qu'une fois ses spikes acceptés.
+- Spikes restants : KAN-50 (ADR-003, multi-tenant — prioritaire), KAN-29, KAN-25, KAN-19. Une story ne démarre qu'une fois ses spikes acceptés.
 
 ## Phase actuelle : pitch (ADR-002)
 - Le produit vise une démonstration. Les autorités reçoivent les signalements dans des boîtes de démo
