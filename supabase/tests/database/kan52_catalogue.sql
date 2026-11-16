@@ -1,14 +1,16 @@
 -- KAN-52 — Tests du catalogue de services (CA1–CA5) et des politiques RLS du socle ADR-003.
 -- Toute donnée de test est annulée : les tests tournent dans un sous-bloc qui se termine par une
 -- exception technique P0099, interceptée. Toute AUTRE exception = échec (règle CLAUDE.md).
+-- Données de test placées dans une zone FICTIVE (≈ -75°, 48.7°) pour ne pas interférer avec
+-- les organisations de démonstration de Lévis (KAN-51).
 do $t$
 declare
   n int; v0 bigint; v1 bigint; res jsonb; codes text[];
   ville uuid := gen_random_uuid(); mtmd uuid := gen_random_uuid(); stl uuid := gen_random_uuid();
   u_admin uuid := gen_random_uuid(); u_membre uuid := gen_random_uuid(); u_citoyen uuid := gen_random_uuid();
-  box text := 'MULTIPOLYGON(((-71.30 46.70,-71.00 46.70,-71.00 46.85,-71.30 46.85,-71.30 46.70)))';
+  box text := 'MULTIPOLYGON(((-75.30 48.70,-75.00 48.70,-75.00 48.85,-75.30 48.85,-75.30 48.70)))';
   route132 extensions.geometry := extensions.st_multi(extensions.st_buffer(
-    extensions.st_geogfromtext('LINESTRING(-71.25 46.80,-71.05 46.80)'), 30)::extensions.geometry);
+    extensions.st_geogfromtext('LINESTRING(-75.25 48.80,-75.05 48.80)'), 30)::extensions.geometry);
   st_nid uuid; st_lamp uuid; st_fuite uuid; st_abri uuid; st_gliss uuid;
   d_voirie uuid; d_eclairage uuid; d_transport uuid;
 begin
@@ -66,7 +68,7 @@ begin
     end;
 
     ------------------------------------------------------------------ CA4 — filtrage par position
-    res := public.available_services(46.75, -71.15);             -- rue municipale
+    res := public.available_services(48.75, -75.15);             -- rue municipale
     select array_agg(s ->> 'code' order by s ->> 'code') into codes from jsonb_array_elements(res -> 'services') s;
     if codes <> array['abribus','fuite_eau','lampadaire','nid_de_poule'] then
       raise exception 'CA4 échec (rue) : %', codes; end if;
@@ -75,7 +77,7 @@ begin
     if (res -> 'services' -> 0 ->> 'recipient_is_demo')::boolean is not true then
       raise exception 'CA4 échec : indicateur démo absent'; end if;
 
-    res := public.available_services(46.80, -71.15);             -- sur la route 132
+    res := public.available_services(48.80, -75.15);             -- sur la route 132
     if (select s ->> 'recipient' from jsonb_array_elements(res -> 'services') s where s ->> 'code' = 'nid_de_poule')
        <> 'MTMD — test' then raise exception 'CA4 échec : la route 132 doit aller au MTMD'; end if;
 
@@ -83,13 +85,13 @@ begin
     if jsonb_array_length(res -> 'services') <> 0 then raise exception 'CA4 échec : services hors territoire'; end if;
 
     update public.organization set status = 'suspended' where id = stl;
-    res := public.available_services(46.75, -71.15);
+    res := public.available_services(48.75, -75.15);
     if exists (select 1 from jsonb_array_elements(res -> 'services') s where s ->> 'code' = 'abribus') then
       raise exception 'CA4 échec : organisation suspendue encore proposée'; end if;
 
     ------------------------------------------------------------------ CA3 — désactivation, pas de suppression
     update public.service_template set active = false where id = st_lamp;
-    res := public.available_services(46.75, -71.15);
+    res := public.available_services(48.75, -75.15);
     if exists (select 1 from jsonb_array_elements(res -> 'services') s where s ->> 'code' = 'lampadaire') then
       raise exception 'CA3 échec : service désactivé encore proposé'; end if;
     begin
@@ -108,7 +110,7 @@ begin
     select count(*) into n from public.organization;
     if n <> 0 then raise exception 'RLS échec : anonyme voit % organisations', n; end if;
     begin
-      perform public.available_services(46.75, -71.15);
+      perform public.available_services(48.75, -75.15);
       raise exception 'RLS échec : available_services appelable par anon (doit passer par /v1)';
     exception when insufficient_privilege then null;
     end;
@@ -161,7 +163,8 @@ begin
     insert into public.domain (code, label_fr) values ('test_admin', 'Test super admin');
     select count(*) into n from public.organization;
     execute 'reset role';
-    if n <> 3 then raise exception 'RLS échec : super admin voit % organisations (3 attendues)', n; end if;
+    if n <> (select count(*) from public.organization) then
+      raise exception 'RLS échec : super admin voit % organisations (toutes attendues)', n; end if;
 
     -- Faux super admin (claim sans ligne platform_admin) : refusé
     perform set_config('request.jwt.claims', json_build_object('sub', u_citoyen, 'role', 'authenticated',
