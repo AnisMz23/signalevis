@@ -63,6 +63,18 @@ export default function HomeScreen() {
         </Pressable>
       )}
 
+      <Link href="/signaler/type" asChild>
+        <Pressable
+          testID="report-button"
+          accessibilityRole="button"
+          accessibilityLabel={t('home.report')}
+          accessibilityHint={t('home.report.hint')}
+          style={StyleSheet.flatten([styles.button, { backgroundColor: theme.primary }])}
+        >
+          <Text style={[styles.buttonText, { color: theme.onPrimary }]}>{t('home.report')}</Text>
+        </Pressable>
+      </Link>
+
       <Link href="/a-propos" asChild>
         <Pressable
           accessibilityRole="link"
