@@ -95,9 +95,11 @@ Toujours **staging d'abord**, prod seulement si tous les tests passent sur stagi
    `apply_migration` ; renommer le fichier avec la version enregistrée en prod (`list_migrations`).
 2. Edge Function : `supabase/functions/<nom>/` déployée via `deploy_edge_function`.
 3. Tests base : exécuter `supabase/tests/database/*.sql` (outil `execute_sql`) — une exception = échec.
-4. Tests API :
+   Données de test : dans un sous-bloc terminé par `raise exception using errcode = 'P0099'`
+   intercepté (modèle : `kan52_catalogue.sql`) → tout est annulé, rien ne reste en base.
+4. Tests API (tous les scripts) :
    ```bash
-   tests/api/ca2_health.sh staging
+   for t in tests/api/*.sh; do "$t" staging || break; done
    ```
 5. Sécurité : `get_advisors` (security) doit être vide après toute migration.
 6. Contrat : toute nouvelle route `/v1` est d'abord ajoutée à `docs/api/openapi.yaml`.
