@@ -4,7 +4,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.49.4";
 
-const API_VERSION = "0.3.0";
+const API_VERSION = "0.4.0";
 
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), {
@@ -76,6 +76,14 @@ async function health(): Promise<Response> {
   const { data, error } = await serviceClient().rpc("health_check");
   if (error || !data) return json(503, { status: "degraded", version: API_VERSION });
   return json(200, { status: "ok", version: API_VERSION, postgres: data.postgres, postgis: data.postgis });
+}
+
+// KAN-63 — profil de l'utilisateur connecté (droits confirmés en base par public.me()).
+async function me(req: Request): Promise<Response> {
+  const db = userClient(req);
+  if (!db) return json(401, { error: "unauthorized" });
+  const { data, error } = await db.rpc("me");
+  return error ? fromDbError(error) : json(200, data);
 }
 
 // KAN-51 — routes super admin. Droits vérifiés en base (private.require_platform_admin()).
@@ -160,6 +168,11 @@ Deno.serve(async (req: Request) => {
   if (route === "/services") {
     if (req.method !== "GET") return json(405, { error: "method_not_allowed" });
     return await services(new URL(req.url));
+  }
+
+  if (route === "/me") {
+    if (req.method !== "GET") return json(405, { error: "method_not_allowed" });
+    return await me(req);
   }
 
   if (route.startsWith("/platform/")) return await platform(req, route);
