@@ -111,6 +111,16 @@ Toujours **staging d'abord**, prod seulement si tous les tests passent sur stagi
 5. Sécurité : `get_advisors` (security) doit être vide après toute migration.
 6. Contrat : toute nouvelle route `/v1` est d'abord ajoutée à `docs/api/openapi.yaml`.
 
+## Console web (KAN-63) — dossier `console/`
+- Next.js 16 (App Router, TypeScript strict). Lire `console/AGENTS.md` et `console/README.md` avant toute
+  modification (doc versionnée dans `node_modules/next/dist/docs/` ; `proxy.ts` remplace `middleware.ts`).
+- Données uniquement via l'API `/v1` (`console/src/lib/api/`) ; SDK Supabase uniquement dans `console/src/lib/auth/`.
+- Claims JWT = navigation seulement ; droits reconfirmés par `GET /v1/me` (`public.me()`, ADR-003 D3).
+- Textes : `console/src/i18n/fr.json` via `t()` ; couleurs : `console/src/theme/tokens.ts` (paires dans `textPairs`).
+- Hébergement : Vercel (décision PO 2026-11-20), Root Directory `console`, variables publiques de `.env.example`.
+  La console ne stocke aucune donnée ; les données restent à `ca-central-1`.
+- Avant toute PR, depuis `console/` : `npm run check` puis `npm run build`.
+
 ## App mobile (KAN-41) — dossier `app/`
 - Expo SDK 58, TypeScript strict, Expo Router (écrans dans `app/src/app/`). Lire `app/AGENTS.md`
   avant toute modification : les API Expo changent à chaque SDK, consulter la doc versionnée.

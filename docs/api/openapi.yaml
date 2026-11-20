@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: API Signalement Lévis
-  version: 0.3.0
+  version: 0.4.0
   description: |
     API publique versionnée (KAN-42 CA2, ADR-001). Les clients (app mobile, console autorité,
     intégrations) dépendent de ce contrat, jamais de l'API PostgREST de Supabase.
@@ -67,6 +67,18 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
+  /me:
+    get:
+      operationId: getMe
+      summary: Profil de l'utilisateur connecté (KAN-63) — droits confirmés en base, pas seulement le JWT
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Profil ; organization et org_role sont null pour un super admin ou un citoyen
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Me" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
   /platform/organizations:
     get:
       operationId: listOrganizations
@@ -167,6 +179,20 @@ components:
     Unauthorized: { description: Jeton absent ou invalide, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
     Forbidden: { description: Réservé au super admin, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
   schemas:
+    Me:
+      type: object
+      required: [is_platform_admin, org_role, organization]
+      properties:
+        is_platform_admin: { type: boolean }
+        org_role: { type: [string, "null"], enum: [org_admin, dispatcher, field_worker, null] }
+        organization:
+          type: [object, "null"]
+          required: [id, name, slug, status]
+          properties:
+            id: { type: string, format: uuid }
+            name: { type: string }
+            slug: { type: string }
+            status: { type: string, enum: [demo, active, suspended] }
     OrganizationSummary:
       type: object
       required: [id, name, slug, status, domains, active_members, pending_invitations, created_at]
