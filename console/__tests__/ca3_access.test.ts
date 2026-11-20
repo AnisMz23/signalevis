@@ -40,6 +40,14 @@ describe("CA3 — matrice rôle × espace (proxy)", () => {
     expect(decide("/", dispatcher)).toEqual({ kind: "redirect", to: "/org" });
   });
 
+  it("CA2 : lien de connexion arrivé sur l'accueil → transmis à /auth/confirm", () => {
+    expect(decide("/", null, "?code=abc")).toEqual({ kind: "redirect", to: "/auth/confirm?code=abc" });
+    expect(decide("/", null, "?token_hash=h&type=magiclink")).toEqual({
+      kind: "redirect", to: "/auth/confirm?token_hash=h&type=magiclink",
+    });
+    expect(decide("/auth/confirm", null, "?code=abc")).toEqual({ kind: "allow" });
+  });
+
   it("CA3 : pages publiques accessibles sans session", () => {
     for (const p of ["/connexion", "/acces-refuse", "/auth/confirm"]) expect(decide(p, null)).toEqual({ kind: "allow" });
   });

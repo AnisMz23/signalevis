@@ -40,8 +40,19 @@ export function homePath(c: Claims): string | null {
 
 export type Decision = { kind: "allow" } | { kind: "redirect"; to: string };
 
-/** Décision pour une requête : claims null = non connecté. */
-export function decide(pathname: string, claims: Claims | null): Decision {
+/** Paramètres d'un lien de connexion Supabase (PKCE ou gabarit token_hash). */
+const AUTH_PARAMS = ["code", "token_hash"];
+
+/**
+ * Décision pour une requête : claims null = non connecté.
+ * Un lien de connexion qui arrive ailleurs que sur /auth/confirm (ex. Supabase retombe sur le
+ * « Site URL » quand l'adresse de retour n'est pas autorisée) est renvoyé vers /auth/confirm.
+ */
+export function decide(pathname: string, claims: Claims | null, search = ""): Decision {
+  const params = new URLSearchParams(search);
+  if (pathname !== "/auth/confirm" && AUTH_PARAMS.some((k) => params.has(k))) {
+    return { kind: "redirect", to: `/auth/confirm?${params.toString()}` };
+  }
   const area = areaOf(pathname);
   if (area === "public") return { kind: "allow" };
   if (!claims) return { kind: "redirect", to: ROUTES.login };

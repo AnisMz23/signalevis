@@ -23,7 +23,7 @@ export async function handleRequest(request: NextRequest): Promise<NextResponse>
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims ? parseClaims(data.claims) : null;
 
-  const decision = decide(request.nextUrl.pathname, claims);
+  const decision = decide(request.nextUrl.pathname, claims, request.nextUrl.search);
   if (decision.kind === "allow") return response;
 
   const redirect = NextResponse.redirect(new URL(decision.to, request.url));
