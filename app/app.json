@@ -6,7 +6,7 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ca.signalevis.app",
@@ -41,7 +41,8 @@
         {
           "locationWhenInUsePermission": "Signalement Lévis utilise votre position pour proposer les services offerts à cet endroit et indiquer le destinataire prévu de votre signalement."
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

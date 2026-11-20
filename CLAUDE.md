@@ -117,6 +117,11 @@ Toujours **staging d'abord**, prod seulement si tous les tests passent sur stagi
 - Dépendances : toujours `npx expo install <paquet>` (jamais `npm install <paquet>`).
 - Textes : uniquement via `t()` (`app/src/i18n/fr.json` + `en.json`, mêmes clés). Aucun texte en dur.
 - Couleurs : uniquement via `useTheme()` ; toute nouvelle paire texte/fond ajoutée à `__tests__/ca2_theme.test.ts`.
+- Design : maquettes Figma de l'app → `docs/design/mobile/README.md` (nœuds, écarts, tickets). Lecture par l'API
+  REST Figma (`https://api.figma.com/v1/files/HhQawU6MA9j9pFfNfLEm00/nodes?ids=…`, clé injectée par le proxy,
+  en-tête `X-Figma-Token: proxy-injected`) : le connecteur MCP Figma est limité (plan Starter).
+- Composants d'interface réutilisables dans `app/src/ui/` (Button, StepHeader, SearchField, CategoryTile,
+  Banner911, Icon) ; typographie via `typography` du thème (Nunito). Ne pas recréer de styles ad hoc.
 - Backend : uniquement via `app/src/api/` (jamais le SDK Supabase dans un écran).
 - Nouvel écran (route) : régénérer les types de routes avant `npm run typecheck` en lançant
   brièvement le serveur de dev (`CI=1 timeout 60 npx expo start --offline`) — `.expo/` n'est pas versionné.
