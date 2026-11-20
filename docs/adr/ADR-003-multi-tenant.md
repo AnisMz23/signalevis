@@ -96,7 +96,8 @@ La RLS filtre des **lignes**, pas des **colonnes**. La règle « l'identité du 
 affichée au dispatcher ni au travailleur terrain » ne peut donc pas reposer sur une politique RLS seule.
 
 **Décision** : l'identité est dans une table séparée `report_reporter(report_id, citizen_id, contact…)`,
-lisible uniquement par le citoyen concerné (et la plateforme pour la file « À trier »). La table
+lisible uniquement par le citoyen concerné — **jamais** par la plateforme, y compris pour la file
+« À trier » (D7, décision 1B du 2026-11-20). La table
 `report` ne contient aucune donnée identifiante ; les organisations y accèdent via leur affectation.
 
 Le prototype a validé le principe avec des vues à colonnes restreintes (**T3**, **T4**). La séparation
@@ -109,6 +110,15 @@ en table est retenue pour la production : elle donne la même garantie sans vue 
   que des totaux (**T9b**) — alimente la maquette `SA-Organisations`.
 - Contenu d'une organisation : seulement si `support_access_grant` actif, en lecture seule, journalisé
   (**T9c**, accès expiré → refusé **T9d**).
+- File « À trier » (signalements sans affectation) — **accès restreint** (décision PO 1B du 2026-11-20,
+  KAN-53 CA5, KAN-64) : le super admin voit uniquement le type de service, la position / l'adresse,
+  le motif de mise en file, l'origine, l'ancienneté et la photo principale **floutée**. Jamais la
+  description ni l'identité du citoyen (`report_reporter`). Chaque consultation est journalisée dans
+  `audit_log`. Le but est la réaffectation, pas la lecture du contenu.
+- L'état « À valider » d'un signalement est **interne** à l'organisation et n'est pas exposé au citoyen
+  (décision PO 2A du 2026-11-20, KAN-17 CA5).
+- Mise en œuvre : colonnes restreintes par table dédiée ou fonction RPC `SECURITY INVOKER` ;
+  **pas de vue `SECURITY DEFINER`** (cohérent avec D6 et les advisors Supabase).
 
 ### D8 — Matrice rôles × permissions et RLS (KAN-50 CA2)
 
@@ -119,7 +129,7 @@ en table est retenue pour la production : elle donne la même garantie sans vue 
 | `org_domain`, `org_service`, territoire | gestion de `routing_priority` | gestion | lecture | — | — |
 | `membership` de son organisation | agrégats | gestion | lecture | soi-même | — |
 | `report` routé vers son organisation | support actif | lecture | lecture | via ses interventions | — |
-| `report` « À trier » (sans affectation) | lecture, réaffectation | — | — | — | — |
+| `report` « À trier » (sans affectation) | colonnes restreintes (D7), consultation journalisée, réaffectation | — | — | — | — |
 | `report` + `report_reporter` | — | — | — | — | les siens |
 | `report_assignment` | support actif | lecture, réacheminement | lecture, réacheminement | — | — |
 | `work_order`, `work_order_event` | support actif | gestion | gestion | les siennes, statut terrain | — |
@@ -197,9 +207,12 @@ journalisation des accès support, séparation de l'identité (D6) comme mesure 
 ## Décisions PO requises
 
 1. ~~Valider l'ADR (CA6)~~ — **validé** le 2026-11-16.
-2. ~~File « À trier »~~ — **validé** le 2026-11-16 : le super admin voit le contenu des signalements
-   **sans affectation** pour les réaffecter (D8), en exception à « agrégats seulement ». Justification :
-   la plateforme est responsable de la saisie citoyenne (D10) ; menu « À trier » de la maquette super admin.
+2. ~~File « À trier »~~ — validé le 2026-11-16 (accès au contenu), puis **remplacé le 2026-11-20 par
+   l'option 1B** : accès restreint (D7) — type, position, motif, origine, ancienneté, photo floutée ;
+   ni description ni identité ; consultations journalisées. Source : KAN-53 CA5, KAN-64.
+   Justification conservée : la plateforme est responsable de la saisie citoyenne (D10).
+4. ~~État « À valider »~~ — **validé** le 2026-11-20 (option 2A) : état interne, non visible du citoyen
+   (KAN-17 CA5).
 3. **KAN-20 CA5** : routage selon la plage horaire — **toujours en attente**. Le modèle le permet
    (`org_service.schedule`, `holiday`) ; sans décision, l'étape 4 de D4 est ignorée.
 
@@ -208,5 +221,7 @@ journalisation des accès support, séparation de l'identité (D6) comme mesure 
 - **Accepté** le 2026-11-16 par le PO (CA6), avec la décision « File À trier ».
 - Reports effectués en commentaire sur KAN-12, KAN-20, KAN-33, KAN-46 (DoD) ; blocage de KAN-12 /
   KAN-20 levé dans `CLAUDE.md`.
+- **Révision** le 2026-11-20 : décisions 1B (« À trier » restreint) et 2A (« À valider » interne),
+  issues de la revue des maquettes console (Figma « Revue des US — écarts à trancher »).
 - **Révision** si : passage multi-organisation par utilisateur, organisation avec plus de quelques
   milliers de membres (coût de `current_org()` à remesurer), ou exigence d'audit externe.
